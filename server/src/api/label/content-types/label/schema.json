@@ -1,10 +1,10 @@
 {
   "kind": "collectionType",
-  "collectionName": "statuses",
+  "collectionName": "labels",
   "info": {
-    "singularName": "status",
-    "pluralName": "statuses",
-    "displayName": "Status",
+    "singularName": "label",
+    "pluralName": "labels",
+    "displayName": "Label",
     "description": ""
   },
   "options": {
@@ -18,9 +18,9 @@
     },
     "tasks": {
       "type": "relation",
-      "relation": "oneToMany",
+      "relation": "manyToMany",
       "target": "api::task.task",
-      "mappedBy": "task_status"
+      "inversedBy": "labels"
     }
   }
 }
