@@ -65,6 +65,5 @@ function PaginatedBacklog() {
   );
 }
 
-// fekjvnkjvezn
 
 export default PaginatedBacklog;
