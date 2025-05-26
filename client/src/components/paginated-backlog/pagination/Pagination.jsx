@@ -64,6 +64,7 @@ function Pagination({ currentPage, totalPages, onPageChange }) {
       >
         Previous
       </button>
+      <ul className="pagination-list">{pageLinks}</ul>
       <button
         className="pagination-next"
         disabled={currentPage === totalPages}
@@ -71,7 +72,6 @@ function Pagination({ currentPage, totalPages, onPageChange }) {
       >
         Next page
       </button>
-      <ul className="pagination-list">{pageLinks}</ul>
     </nav>
   );
 }

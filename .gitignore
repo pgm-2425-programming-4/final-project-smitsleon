@@ -146,6 +146,12 @@ server/yarn-error.log
 server/coverage
 
 ############################
+# Environment variables
+############################
+
+client/.env
+
+############################
 # Strapi
 ############################
 

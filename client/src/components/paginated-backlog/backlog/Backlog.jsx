@@ -12,17 +12,24 @@ function Backlog({ tasks, isLoading, error }) {
           <th>Title</th>
           <th>Description</th>
           <th>Due Date</th>
-
         </tr>
       </thead>
       <tbody>
         {tasks.map(task => (
           <tr key={task.id}>
-            <td>{task.title}</td>
-            <td>{task.description}</td>
+            <td>{task.title || 'No title'}</td>
+            <td>
+              {!task.description
+                ? '-'
+                : typeof task.description === 'string'
+                  ? (task.description.length > 50 
+                     ? `${task.description.substring(0, 50)}...` 
+                     : task.description)
+                  : '-'}
+            </td>
             <td>
               {task.dueDate 
-                ? new Date(task.attributes.dueDate).toLocaleDateString() 
+                ? new Date(task.dueDate).toLocaleDateString() 
                 : '-'}
             </td>
           </tr>
