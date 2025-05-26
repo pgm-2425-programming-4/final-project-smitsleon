@@ -10,6 +10,9 @@ function PaginatedBacklog() {
   const [pageSize] = useState(10);
   const [totalItems, setTotalItems] = useState(0);
 
+  // API token STRAPI
+  const API_TOKEN = import.meta.env.VITE_STRAPI_API_TOKEN;
+
   useEffect(() => {
     const fetchBacklogTasks = async () => {
       setIsLoading(true);
@@ -18,20 +21,28 @@ function PaginatedBacklog() {
           `http://localhost:1337/api/tasks?populate=task_status&filters[task_status][name][$eq]=Backlog&pagination[page]=${currentPage}&pagination[pageSize]=${pageSize}`,
           {
             headers: {
-
               "Content-Type": "application/json",
+              Authorization: `Bearer ${API_TOKEN}`,
             },
           }
         );
 
         if (!response.ok) {
-          throw new Error("Failed to fetch backlog tasks");
+          throw new Error(`Failed to fetch backlog tasks: ${response.status}`);
         }
 
         const data = await response.json();
-        setTasks(data.data);
-        setTotalItems(data.meta.pagination.total);
+        console.log("API Response:", data);
+
+        if (data.data) {
+          setTasks(data.data);
+          setTotalItems(data.meta?.pagination?.total || 0);
+        } else {
+          console.error("Unexpected API response format:", data);
+          setError(new Error("Invalid API response format"));
+        }
       } catch (err) {
+        console.error("Error fetching tasks:", err);
         setError(err);
       } finally {
         setIsLoading(false);
@@ -51,7 +62,7 @@ function PaginatedBacklog() {
     <div className="paginated-backlog">
       <h2>Backlog Tasks</h2>
       <p>Total items: {totalItems}</p>
-      
+
       <Backlog tasks={tasks} isLoading={isLoading} error={error} />
 
       {!isLoading && !error && tasks.length > 0 && (
@@ -64,6 +75,5 @@ function PaginatedBacklog() {
     </div>
   );
 }
-
 
 export default PaginatedBacklog;
