@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import Backlog from "./backlog/Backlog";
 import Pagination from "./pagination/Pagination";
+import { API_URL, API_TOKEN } from "../../constants/constants";
 
 function PaginatedBacklog() {
   const [tasks, setTasks] = useState([]);
@@ -11,14 +12,14 @@ function PaginatedBacklog() {
   const [totalItems, setTotalItems] = useState(0);
 
   // API token STRAPI
-  const API_TOKEN = import.meta.env.VITE_STRAPI_API_TOKEN;
+  // const API_TOKEN = import.meta.env.VITE_STRAPI_API_TOKEN;
 
   useEffect(() => {
     const fetchBacklogTasks = async () => {
       setIsLoading(true);
       try {
         const response = await fetch(
-          `http://localhost:1337/api/tasks?populate=task_status&filters[task_status][name][$eq]=Backlog&pagination[page]=${currentPage}&pagination[pageSize]=${pageSize}`,
+          `${API_URL}/tasks?populate=task_status&filters[task_status][name][$eq]=Backlog&pagination[page]=${currentPage}&pagination[pageSize]=${pageSize}`,
           {
             headers: {
               "Content-Type": "application/json",
