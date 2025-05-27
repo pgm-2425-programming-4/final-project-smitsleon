@@ -22,7 +22,6 @@ function PaginatedBacklog() {
           `${API_URL}/tasks?populate=task_status&filters[task_status][name][$eq]=Backlog&pagination[page]=${currentPage}&pagination[pageSize]=${pageSize}`,
           {
             headers: {
-              "Content-Type": "application/json",
               Authorization: `Bearer ${API_TOKEN}`,
             },
           }
