@@ -1,4 +1,6 @@
+import "./Pagination.css";
 import { PAGE_SIZE_OPTIONS } from "../../../constants/constants";
+
 export function Pagination({
   currentPage,
   pageCount,
