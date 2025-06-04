@@ -1,12 +1,21 @@
-function Pagination({ currentPage, totalPages, onPageChange }) {
+import "./Pagination.css";
+import { PAGE_SIZE_OPTIONS } from "../../../constants/constants";
+
+export function Pagination({
+  currentPage,
+  pageCount,
+  pageSize,
+  onPageChanged,
+  onPageSizeChanged,
+}) {
   let pageNumberArray;
 
-  if (totalPages <= 6) {
+  if (pageCount <= 6) {
     pageNumberArray = [];
-    for (let i = 0; i < totalPages; i++) {
+    for (let i = 0; i < pageCount; i++) {
       pageNumberArray.push(i + 1);
     }
-  } else if (currentPage > 3 && currentPage < totalPages - 2) {
+  } else if (currentPage > 3 && currentPage < pageCount - 2) {
     pageNumberArray = [
       1,
       null,
@@ -14,18 +23,18 @@ function Pagination({ currentPage, totalPages, onPageChange }) {
       currentPage,
       currentPage + 1,
       null,
-      totalPages,
+      pageCount,
     ];
   } else if (currentPage <= 3) {
-    pageNumberArray = [1, 2, 3, 4, null, totalPages];
+    pageNumberArray = [1, 2, 3, 4, null, pageCount];
   } else {
     pageNumberArray = [
       1,
       null,
-      totalPages - 3,
-      totalPages - 2,
-      totalPages - 1,
-      totalPages,
+      pageCount - 3,
+      pageCount - 2,
+      pageCount - 1,
+      pageCount,
     ];
   }
 
@@ -42,11 +51,11 @@ function Pagination({ currentPage, totalPages, onPageChange }) {
         <li key={index}>
           <button
             className={
-              "pagination-link " +
-              (pageNumber === currentPage ? "is-current" : "")
+              "page-button " +
+              (pageNumber === currentPage ? "active" : "")
             }
             aria-label={`Go to page ${pageNumber}`}
-            onClick={() => onPageChange(pageNumber)}
+            onClick={() => onPageChanged(pageNumber)}
           >
             {pageNumber}
           </button>
@@ -58,22 +67,35 @@ function Pagination({ currentPage, totalPages, onPageChange }) {
   return (
     <nav className="pagination" role="navigation" aria-label="pagination">
       <button
-        className="pagination-previous"
+        className = "page-button"
         disabled={currentPage === 1}
-        onClick={() => onPageChange(currentPage - 1)}
+        onClick={() => onPageChanged(currentPage - 1)}
       >
         Previous
       </button>
       <ul className="pagination-list">{pageLinks}</ul>
       <button
-        className="pagination-next"
-        disabled={currentPage === totalPages}
-        onClick={() => onPageChange(currentPage + 1)}
+        className = "page-button"
+        disabled={currentPage === pageCount}
+        onClick={() => onPageChanged(currentPage + 1)}
       >
-        Next page
+        Next
       </button>
+      <div>
+        <select
+          className = "dropdown"
+          defaultValue={pageSize}
+          onChange={(event) => onPageSizeChanged(event.target.value)}
+        >
+          {PAGE_SIZE_OPTIONS.map((pageSizeOption) => {
+            return (
+              <option value={pageSizeOption} key={pageSizeOption}>
+                {pageSizeOption} items per page
+              </option>
+            );
+          })}
+        </select>
+      </div>
     </nav>
   );
 }
-
-export default Pagination;
