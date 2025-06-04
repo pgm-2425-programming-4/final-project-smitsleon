@@ -1,5 +1,5 @@
 import './App.css';
-import PaginatedBacklog from './components/paginated-backlog/paginated-backlog.jsx';
+import { PaginatedBackLog } from './components/paginated-backlog/paginated-backlog.jsx';
 
 function App() {
   return (
@@ -8,7 +8,7 @@ function App() {
         <h1>Kanban Board</h1>
       </header>
       <main>
-        <PaginatedBacklog />
+        <PaginatedBackLog />
       </main>
     </div>
   )
