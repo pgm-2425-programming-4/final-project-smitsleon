@@ -4,9 +4,6 @@ import { PaginatedBackLog } from './components/paginated-backlog/paginated-backl
 function App() {
   return (
     <div className="App">
-      <header>
-        <h1>Kanban Board</h1>
-      </header>
       <main>
         <PaginatedBackLog />
       </main>

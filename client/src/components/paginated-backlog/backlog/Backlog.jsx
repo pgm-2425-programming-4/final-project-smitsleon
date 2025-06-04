@@ -1,6 +1,6 @@
 import "./Backlog.css";
 
-export function BacklogTaskList({ backlogTasks }) {
+export function BacklogList({ backlogTasks }) {
   return (
     <div className="backlog-list">
       <h2>Backlog Tasks</h2>

@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Pagination } from "./pagination/Pagination";
 import { PAGE_SIZE_OPTIONS } from "../../constants/constants";
 import { fetchPaginatedTasks } from "../../queries/fetch-paginated-tasks";
-import { BacklogTaskList } from "./backlog/Backlog";
+import { BacklogList } from "./backlog/Backlog";
 import { useQuery } from "@tanstack/react-query";
 
 export function PaginatedBackLog() {
@@ -19,34 +19,39 @@ export function PaginatedBackLog() {
     setPageSize(size);
   }
 
-  const { isPending, isError, data: fetchedBacklogTasks, error } = useQuery ({
-    queryKey: ['backlogTasks', {currentPage, pageSize}],
+  const {
+    isPending,
+    isError,
+    data: fetchedBacklogTasks,
+    error,
+  } = useQuery({
+    queryKey: ["backlogTasks", { currentPage, pageSize }],
     queryFn: () => fetchPaginatedTasks(pageSize, currentPage),
-  })
+  });
 
   useEffect(() => {
-    if(fetchedBacklogTasks) {
+    if (fetchedBacklogTasks) {
       if (currentPage > fetchedBacklogTasks.meta.pagination.pageCount) {
         setCurrentPage(fetchedBacklogTasks.meta.pagination.pageCount);
       }
-      console.log(fetchedBacklogTasks.data)
+      console.log(fetchedBacklogTasks.data);
       setBacklogTasks(fetchedBacklogTasks.data);
       setPageCount(fetchedBacklogTasks.meta.pagination.pageCount);
     }
-  }, [currentPage, fetchedBacklogTasks])
+  }, [currentPage, fetchedBacklogTasks]);
 
   if (isPending) {
-    return <span>Loading...</span>
+    return <span>Loading...</span>;
   }
 
   if (isError) {
-    return <span>Error: {error.message}</span>
+    return <span>Error: {error.message}</span>;
   }
 
   return (
     <>
       <div style={{ marginBottom: "2rem" }}>
-        <BacklogTaskList backlogTasks={backlogTasks} />
+        <BacklogList backlogTasks={backlogTasks} />
       </div>
       <Pagination
         currentPage={currentPage}
