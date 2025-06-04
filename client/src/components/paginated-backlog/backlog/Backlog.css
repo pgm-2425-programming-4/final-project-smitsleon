@@ -1,0 +1,29 @@
+.backlog-list {
+  margin-bottom: 2rem;
+}
+
+.backlog-list h2 {
+  margin-bottom: 1rem;
+  color: hsl(0, 0%, 20%);
+  font-size: 1.5rem;
+}
+
+.task-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.task-item {
+  padding: 0.75rem 1rem;
+  margin-bottom: 0.5rem;
+  background-color: #f8f9fa;
+  border: 1px solid #e9ecef;
+  border-radius: 4px;
+  transition: background-color 0.2s ease;
+}
+
+.task-item:hover {
+  background-color: #e9ecef;
+  cursor: pointer;
+}
