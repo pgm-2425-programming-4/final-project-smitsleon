@@ -1,5 +1,5 @@
-import './App.css';
-import { PaginatedBackLog } from './components/paginated-backlog/paginated-backlog.jsx';
+import "./App.css";
+import { PaginatedBackLog } from "./components/paginated-backlog/paginated-backlog.jsx";
 
 function App() {
   return (
@@ -8,7 +8,7 @@ function App() {
         <PaginatedBackLog />
       </main>
     </div>
-  )
+  );
 }
 
 export default App;

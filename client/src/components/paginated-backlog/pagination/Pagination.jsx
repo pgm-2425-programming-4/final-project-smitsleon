@@ -44,22 +44,21 @@ export function Pagination({
       pageLinks.push(
         <li key={index}>
           <span className="pagination-ellipsis">&hellip;</span>
-        </li>
+        </li>,
       );
     } else {
       pageLinks.push(
         <li key={index}>
           <button
             className={
-              "page-button " +
-              (pageNumber === currentPage ? "active" : "")
+              "page-button " + (pageNumber === currentPage ? "active" : "")
             }
             aria-label={`Go to page ${pageNumber}`}
             onClick={() => onPageChanged(pageNumber)}
           >
             {pageNumber}
           </button>
-        </li>
+        </li>,
       );
     }
   });
@@ -67,7 +66,7 @@ export function Pagination({
   return (
     <nav className="pagination" role="navigation" aria-label="pagination">
       <button
-        className = "page-button"
+        className="page-button"
         disabled={currentPage === 1}
         onClick={() => onPageChanged(currentPage - 1)}
       >
@@ -75,7 +74,7 @@ export function Pagination({
       </button>
       <ul className="pagination-list">{pageLinks}</ul>
       <button
-        className = "page-button"
+        className="page-button"
         disabled={currentPage === pageCount}
         onClick={() => onPageChanged(currentPage + 1)}
       >
@@ -83,7 +82,7 @@ export function Pagination({
       </button>
       <div>
         <select
-          className = "dropdown"
+          className="dropdown"
           defaultValue={pageSize}
           onChange={(event) => onPageSizeChanged(event.target.value)}
         >
