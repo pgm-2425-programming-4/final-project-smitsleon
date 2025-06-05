@@ -150,7 +150,6 @@ server/coverage
 ############################
 
 client/.env
-client/src/constants/constants.js
 
 
 ############################
