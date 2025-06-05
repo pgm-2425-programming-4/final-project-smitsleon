@@ -1,42 +1,16 @@
-function Backlog({ tasks, isLoading, error }) {
-  if (isLoading) return <p>Loading tasks...</p>;
-  
-  if (error) return <p>Error loading tasks: {error.message}</p>;
-  
-  if (!tasks?.length) return <p>No backlog tasks found</p>;
-  
+import "./Backlog.css";
+
+export function BacklogList({ backlogTasks }) {
   return (
-    <table className="backlog-table">
-      <thead>
-        <tr>
-          <th>Title</th>
-          <th>Description</th>
-          <th>Due Date</th>
-        </tr>
-      </thead>
-      <tbody>
-        {tasks.map(task => (
-          <tr key={task.id}>
-            <td>{task.title || 'No title'}</td>
-            <td>
-              {!task.description
-                ? '-'
-                : typeof task.description === 'string'
-                  ? (task.description.length > 50 
-                     ? `${task.description.substring(0, 50)}...` 
-                     : task.description)
-                  : '-'}
-            </td>
-            <td>
-              {task.dueDate 
-                ? new Date(task.dueDate).toLocaleDateString() 
-                : '-'}
-            </td>
-          </tr>
+    <div className="backlog-list">
+      <h2>Backlog Tasks</h2>
+      <ul className="task-list">
+        {backlogTasks.map((backlogTask) => (
+          <li key={backlogTask.id} className="task-item">
+            {backlogTask.title}
+          </li>
         ))}
-      </tbody>
-    </table>
+      </ul>
+    </div>
   );
 }
-
-export default Backlog;

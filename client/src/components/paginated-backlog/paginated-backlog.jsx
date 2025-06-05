@@ -1,79 +1,64 @@
 import { useState, useEffect } from "react";
-import Backlog from "./backlog/Backlog";
-import Pagination from "./pagination/Pagination";
-import { API_URL, API_TOKEN } from "../../constants/constants";
+import { Pagination } from "./pagination/Pagination";
+import { PAGE_SIZE_OPTIONS } from "../../constants/constants";
+import { fetchPaginatedTasks } from "../../queries/fetch-paginated-tasks";
+import { BacklogList } from "./backlog/Backlog";
+import { useQuery } from "@tanstack/react-query";
 
-function PaginatedBacklog() {
-  const [tasks, setTasks] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState(null);
+export function PaginatedBackLog() {
   const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize] = useState(10);
-  const [totalItems, setTotalItems] = useState(0);
+  const [pageCount, setPageCount] = useState(1);
+  const [pageSize, setPageSize] = useState(PAGE_SIZE_OPTIONS[0]);
+  const [backlogTasks, setBacklogTasks] = useState([]);
 
-  // API token STRAPI
-  // const API_TOKEN = import.meta.env.VITE_STRAPI_API_TOKEN;
+  const {
+    isPending,
+    isError,
+    data: fetchedBacklogTasks,
+    error,
+  } = useQuery({
+    queryKey: ["backlogTasks", { currentPage, pageSize }],
+    queryFn: () => fetchPaginatedTasks(pageSize, currentPage),
+  });
 
   useEffect(() => {
-    const fetchBacklogTasks = async () => {
-      setIsLoading(true);
-      try {
-        const response = await fetch(
-          `${API_URL}/tasks?populate=task_status&filters[task_status][name][$eq]=Backlog&pagination[page]=${currentPage}&pagination[pageSize]=${pageSize}`,
-          {
-            headers: {
-              Authorization: `Bearer ${API_TOKEN}`,
-            },
-          }
-        );
-
-        if (!response.ok) {
-          throw new Error(`Failed to fetch backlog tasks: ${response.status}`);
-        }
-
-        const data = await response.json();
-        console.log("API Response:", data);
-
-        if (data.data) {
-          setTasks(data.data);
-          setTotalItems(data.meta?.pagination?.total || 0);
-        } else {
-          console.error("Unexpected API response format:", data);
-          setError(new Error("Invalid API response format"));
-        }
-      } catch (err) {
-        console.error("Error fetching tasks:", err);
-        setError(err);
-      } finally {
-        setIsLoading(false);
+    if (fetchedBacklogTasks) {
+      if (currentPage > fetchedBacklogTasks.meta.pagination.pageCount) {
+        setCurrentPage(fetchedBacklogTasks.meta.pagination.pageCount);
       }
-    };
+      setBacklogTasks(fetchedBacklogTasks.data);
+      setPageCount(fetchedBacklogTasks.meta.pagination.pageCount);
+    }
+  }, [currentPage, fetchedBacklogTasks]);
 
-    fetchBacklogTasks();
-  }, [currentPage, pageSize]);
+  function handlePageChanged(pageNumber) {
+    setCurrentPage(pageNumber);
+  }
 
-  const handlePageChange = (newPage) => {
-    setCurrentPage(newPage);
-  };
+  function handlePageSizeChanged(size) {
+    setPageSize(size);
+  }
 
-  const totalPages = Math.ceil(totalItems / pageSize);
+  if (isPending) {
+    return <span>Loading...</span>;
+  }
+
+  if (isError) {
+    return <span>Error: {error.message}</span>;
+  }
 
   return (
-    <div className="paginated-backlog">
-      <h2>Backlog Tasks</h2>
-      <p>Total items: {totalItems}</p>
-
-      <Backlog tasks={tasks} isLoading={isLoading} error={error} />
-
-      {!isLoading && !error && tasks.length > 0 && (
-        <Pagination
-          currentPage={currentPage}
-          totalPages={totalPages}
-          onPageChange={handlePageChange}
-        />
-      )}
-    </div>
+    <>
+      <div style={{ marginBottom: "2rem" }}>
+        <BacklogList backlogTasks={backlogTasks} />
+      </div>
+      <Pagination
+        currentPage={currentPage}
+        pageCount={pageCount}
+        pageSize={pageSize}
+        onPageChanged={handlePageChanged}
+        onPageSizeChanged={handlePageSizeChanged}
+      />
+    </>
   );
 }
-
-export default PaginatedBacklog;
