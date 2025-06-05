@@ -11,14 +11,6 @@ export function PaginatedBackLog() {
   const [pageSize, setPageSize] = useState(PAGE_SIZE_OPTIONS[0]);
   const [backlogTasks, setBacklogTasks] = useState([]);
 
-  function handlePageChanged(pageNumber) {
-    setCurrentPage(pageNumber);
-  }
-
-  function handlePageSizeChanged(size) {
-    setPageSize(size);
-  }
-
   const {
     isPending,
     isError,
@@ -34,11 +26,18 @@ export function PaginatedBackLog() {
       if (currentPage > fetchedBacklogTasks.meta.pagination.pageCount) {
         setCurrentPage(fetchedBacklogTasks.meta.pagination.pageCount);
       }
-      console.log(fetchedBacklogTasks.data);
       setBacklogTasks(fetchedBacklogTasks.data);
       setPageCount(fetchedBacklogTasks.meta.pagination.pageCount);
     }
   }, [currentPage, fetchedBacklogTasks]);
+
+  function handlePageChanged(pageNumber) {
+    setCurrentPage(pageNumber);
+  }
+
+  function handlePageSizeChanged(size) {
+    setPageSize(size);
+  }
 
   if (isPending) {
     return <span>Loading...</span>;
