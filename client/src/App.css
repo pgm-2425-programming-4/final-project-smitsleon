@@ -120,3 +120,34 @@ header h1 {
   margin-bottom: 1rem;
   color: #d32f2f;
 }
+
+
+.app-layout {
+  display: flex;
+  min-height: 100vh;
+}
+
+.main-content {
+  flex: 1;
+  margin-left: 250px; /* Width of the aside */
+  padding: 2rem;
+}
+
+@media (max-width: 768px) {
+  .main-content {
+    margin-left: 0;
+    padding: 1rem;
+  }
+  
+  .project-aside {
+    position: relative;
+    width: 100%;
+    min-height: auto;
+    border-right: none;
+    border-bottom: 1px solid #e9ecef;
+  }
+  
+  .app-layout {
+    flex-direction: column;
+  }
+}
