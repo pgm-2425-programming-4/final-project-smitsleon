@@ -6,12 +6,21 @@ import { BacklogList } from "./backlog/Backlog";
 import { ProjectAside } from "../aside/Aside";
 import { useQuery } from "@tanstack/react-query";
 
-export function PaginatedBackLog() {
+export function PaginatedBackLog({
+  selectedProject: initialSelectedProject = null,
+}) {
   const [currentPage, setCurrentPage] = useState(1);
   const [pageCount, setPageCount] = useState(1);
   const [pageSize, setPageSize] = useState(PAGE_SIZE_OPTIONS[0]);
   const [backlogTasks, setBacklogTasks] = useState([]);
-  const [selectedProject, setSelectedProject] = useState(null);
+  const [selectedProject, setSelectedProject] = useState(
+    initialSelectedProject,
+  );
+
+  // Update selectedProject when initialSelectedProject changes
+  useEffect(() => {
+    setSelectedProject(initialSelectedProject);
+  }, [initialSelectedProject]);
 
   const {
     isPending,
@@ -44,16 +53,22 @@ export function PaginatedBackLog() {
 
   function handleProjectChange(projectId) {
     setSelectedProject(projectId);
+    setCurrentPage(1); // Reset to first page when changing project
   }
+
+  // Hide the sidebar when we have a pre-selected project
+  const showSidebar = initialSelectedProject === null;
 
   if (isPending) {
     return (
-      <div className="app-layout">
-        <ProjectAside 
-          selectedProject={selectedProject}
-          onProjectChange={handleProjectChange}
-        />
-        <main className="main-content">
+      <div className={showSidebar ? "app-layout" : "main-content"}>
+        {showSidebar && (
+          <ProjectAside
+            selectedProject={selectedProject}
+            onProjectChange={handleProjectChange}
+          />
+        )}
+        <main className={showSidebar ? "main-content" : "backlog-content"}>
           <span>Loading...</span>
         </main>
       </div>
@@ -62,12 +77,14 @@ export function PaginatedBackLog() {
 
   if (isError) {
     return (
-      <div className="app-layout">
-        <ProjectAside 
-          selectedProject={selectedProject}
-          onProjectChange={handleProjectChange}
-        />
-        <main className="main-content">
+      <div className={showSidebar ? "app-layout" : "main-content"}>
+        {showSidebar && (
+          <ProjectAside
+            selectedProject={selectedProject}
+            onProjectChange={handleProjectChange}
+          />
+        )}
+        <main className={showSidebar ? "main-content" : "backlog-content"}>
           <span>Error: {error.message}</span>
         </main>
       </div>
@@ -75,12 +92,14 @@ export function PaginatedBackLog() {
   }
 
   return (
-    <div className="app-layout">
-      <ProjectAside 
-        selectedProject={selectedProject}
-        onProjectChange={handleProjectChange}
-      />
-      <main className="main-content">
+    <div className={showSidebar ? "app-layout" : "main-content"}>
+      {showSidebar && (
+        <ProjectAside
+          selectedProject={selectedProject}
+          onProjectChange={handleProjectChange}
+        />
+      )}
+      <main className={showSidebar ? "main-content" : "backlog-content"}>
         <div style={{ marginBottom: "2rem" }}>
           <BacklogList backlogTasks={backlogTasks} />
         </div>

@@ -1,24 +1,111 @@
+/* Project Aside / Sidebar Styles */
 .project-aside {
-  width: 250px;
+  width: 280px;
   min-height: 100vh;
-  background-color: #f8f9fa;
-  border-right: 1px solid #e9ecef;
-  padding: 2rem 1rem;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 0;
   position: fixed;
   left: 0;
   top: 0;
   overflow-y: auto;
+  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
 }
 
-.project-aside h3 {
-  margin-bottom: 1.5rem;
-  color: #333;
-  font-size: 1.25rem;
+.sidebar-header {
+  padding: 2rem 1.5rem 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.sidebar-header h2 {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 700;
+  text-align: center;
+  color: white;
+}
+
+.main-nav {
+  padding: 1.5rem 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.nav-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.nav-list li {
+  margin-bottom: 0.5rem;
+}
+
+.nav-link {
+  display: block;
+  padding: 1rem 1.5rem;
+  color: rgba(255, 255, 255, 0.9);
+  text-decoration: none;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  border-left: 4px solid transparent;
+}
+
+.nav-link:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  border-left-color: rgba(255, 255, 255, 0.5);
+}
+
+.nav-link.active {
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  border-left-color: #4a90e2;
   font-weight: 600;
-  border-bottom: 2px solid #dee2e6;
-  padding-bottom: 0.5rem;
 }
 
+.projects-section {
+  padding: 1.5rem;
+}
+
+.projects-section h3 {
+  margin: 0 0 1rem 0;
+  font-size: 1.1rem;
+  color: rgba(255, 255, 255, 0.8);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 600;
+}
+
+/* For navigation mode (no onProjectChange) */
+.projects-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.project-item {
+  margin-bottom: 1rem;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.project-item .nav-link {
+  padding: 0.75rem 1rem;
+  margin: 0;
+  border-left: none;
+  border-radius: 0;
+}
+
+.project-item .sub-link {
+  padding: 0.5rem 1rem 0.5rem 2rem;
+  font-size: 0.9rem;
+  background: rgba(255, 255, 255, 0.05);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* For filter mode (with onProjectChange) */
 .project-nav {
   width: 100%;
 }
@@ -37,9 +124,9 @@
   width: 100%;
   padding: 0.75rem 1rem;
   background-color: transparent;
-  border: 1px solid #dee2e6;
+  border: 1px solid rgba(255, 255, 255, 0.3);
   border-radius: 6px;
-  color: #495057;
+  color: rgba(255, 255, 255, 0.9);
   font-size: 0.9rem;
   font-weight: 500;
   text-align: left;
@@ -48,8 +135,9 @@
 }
 
 .project-button:hover {
-  background-color: #e9ecef;
-  border-color: #adb5bd;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.5);
+  color: white;
 }
 
 .project-button.active {
@@ -66,15 +154,16 @@
 
 .loading,
 .error {
-  padding: 1rem;
+  padding: 1rem 1.5rem;
   text-align: center;
   font-size: 0.9rem;
-  color: #6c757d;
+  color: rgba(255, 255, 255, 0.7);
 }
 
 .error {
-  color: #dc3545;
-  background-color: #f8d7da;
-  border: 1px solid #f5c6cb;
+  color: #ff6b6b;
+  background-color: rgba(255, 107, 107, 0.1);
+  border: 1px solid rgba(255, 107, 107, 0.3);
   border-radius: 4px;
+  margin: 1rem 1.5rem;
 }
