@@ -20,7 +20,8 @@ function ProjectBacklogComponent() {
     (project) => project.id === parseInt(projectId),
   );
 
-  const projectName = project?.attributes?.name || project?.name || "No Project Selected";
+  const projectName =
+    project?.attributes?.name || project?.name || "No Project Selected";
 
   const handleAddTaskClick = () => {
     setIsTaskModalOpen(true);

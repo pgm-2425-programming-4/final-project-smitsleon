@@ -61,7 +61,8 @@ export function ProjectAside() {
             <span>Projects</span>
           </li>
           {projects.length > 0 ? (
-            projects.map((project) => (              <li key={project.id}>
+            projects.map((project) => (
+              <li key={project.id}>
                 <Link
                   to="/projects/$projectId"
                   params={{ projectId: project.id.toString() }}
@@ -84,7 +85,8 @@ export function ProjectAside() {
                 Geen projecten beschikbaar
               </div>
             </li>
-          )}        </ul>
+          )}{" "}
+        </ul>
       </nav>
     </aside>
   );

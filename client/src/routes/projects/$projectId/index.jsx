@@ -29,7 +29,8 @@ function ProjectDetailComponent() {
   );
 
   // Handle both formats: project.attributes.name and project.name
-  const projectName = project?.attributes?.name || project?.name || "Loading...";
+  const projectName =
+    project?.attributes?.name || project?.name || "Loading...";
 
   // Toggle between backlog and kanban views
   const toggleView = (view) => {
@@ -106,12 +107,18 @@ function ProjectDetailComponent() {
       </header>
 
       {/* Backlog View */}
-      <div ref={backlogRef} style={{ display: activeView === "backlog" ? "block" : "none" }}>
+      <div
+        ref={backlogRef}
+        style={{ display: activeView === "backlog" ? "block" : "none" }}
+      >
         <PaginatedBackLog selectedProject={numericProjectId} />
       </div>
 
       {/* Kanban View */}
-      <div ref={kanbanRef} style={{ display: activeView === "kanban" ? "block" : "none" }}>
+      <div
+        ref={kanbanRef}
+        style={{ display: activeView === "kanban" ? "block" : "none" }}
+      >
         <div style={{ padding: "2rem", textAlign: "center" }}>
           <h2>Kanban View</h2>
           <p>Kanban functionaliteit komt binnenkort beschikbaar.</p>
