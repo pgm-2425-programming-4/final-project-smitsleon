@@ -1,0 +1,129 @@
+/* Kanban Board Component Styling */
+.kanban-board {
+  display: flex;
+  gap: 1.5rem;
+  padding: 1rem 0;
+  overflow-x: auto;
+  min-height: 70vh;
+}
+
+.kanban-column {
+  flex: 0 0 300px;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  padding: 1rem;
+  border: 1px solid #e9ecef;
+}
+
+.kanban-column__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 2px solid #dee2e6;
+}
+
+.kanban-column__title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #495057;
+}
+
+.kanban-column__count {
+  background-color: #6c757d;
+  color: white;
+  border-radius: 12px;
+  padding: 0.25rem 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.kanban-tasks {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  min-height: 200px;
+}
+
+.kanban-task {
+  background-color: white;
+  border: 1px solid #dee2e6;
+  border-radius: 6px;
+  padding: 1rem;
+  cursor: grab;
+  transition: all 0.2s ease;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.kanban-task:hover {
+  border-color: #4a90e2;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  transform: translateY(-1px);
+}
+
+.kanban-task:active {
+  cursor: grabbing;
+}
+
+.kanban-task__title {
+  font-weight: 600;
+  color: #2c3e50;
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.kanban-task__description {
+  color: #6c757d;
+  font-size: 0.8rem;
+  line-height: 1.4;
+  margin-bottom: 0.75rem;
+}
+
+.kanban-task__meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.75rem;
+  color: #6c757d;
+}
+
+.kanban-task__priority {
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.kanban-task__priority--high {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
+.kanban-task__priority--medium {
+  background-color: #fff3cd;
+  color: #856404;
+}
+
+.kanban-task__priority--low {
+  background-color: #d1ecf1;
+  color: #0c5460;
+}
+
+.kanban-placeholder {
+  text-align: center;
+  padding: 2rem;
+  color: #6c757d;
+  font-style: italic;
+}
+
+/* Drag and drop styles */
+.kanban-column--drag-over {
+  background-color: #e3f2fd;
+  border-color: #4a90e2;
+}
+
+.kanban-task--dragging {
+  opacity: 0.5;
+  transform: rotate(5deg);
+}

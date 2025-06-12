@@ -9,26 +9,18 @@ function ProjectBacklogComponent() {
   const { projectId } = Route.useParams();
   const [isTaskModalOpen, setIsTaskModalOpen] = useState(false);
 
-  // Fetch the projects data to find the active project
+  // Fetch the projects data to find the project
   const { data: projectsData } = useQuery({
     queryKey: ["projects"],
     queryFn: fetchProjects,
   });
 
-  // Find the active project from the projects list
-  const activeProject = projectsData?.data?.find(
+  // Find the project from the projects list
+  const project = projectsData?.data?.find(
     (project) => project.id === parseInt(projectId),
   );
 
-  const projectName = activeProject?.ProjectName || "No Project Selected";
-
-  // Only show status if we have an active project
-  const isActive = activeProject?.isActive;
-  const statusText = activeProject
-    ? isActive
-      ? "Active Project"
-      : "Inactive Project"
-    : "";
+  const projectName = project?.attributes?.name || project?.name || "No Project Selected";
 
   const handleAddTaskClick = () => {
     setIsTaskModalOpen(true);
@@ -43,7 +35,6 @@ function ProjectBacklogComponent() {
       <header className="header">
         <div className="header__project">
           <h1 className="header__title">{projectName}</h1>
-          <span className="header__subtitle">{statusText}</span>
         </div>
         <div className="header__actions">
           <div className="header__view-toggle">
@@ -69,9 +60,6 @@ function ProjectBacklogComponent() {
             className="button button--primary"
             onClick={handleAddTaskClick}
           >
-            <span className="icon">
-              <img src="/styles/images/icons/plus.svg" alt="Add" />
-            </span>
             Add Task
           </button>
         </div>

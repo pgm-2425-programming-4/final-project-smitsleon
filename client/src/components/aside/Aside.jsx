@@ -1,7 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { fetchProjects } from "../../queries/fetch-projects";
 import { Link, useLocation } from "@tanstack/react-router";
-import "./Aside.css";
 
 export function ProjectAside() {
   const location = useLocation();

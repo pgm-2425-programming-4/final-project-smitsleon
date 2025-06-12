@@ -1,5 +1,3 @@
-import "./Backlog.css";
-
 export function BacklogList({ backlogTasks }) {
   return (
     <div className="backlog-list">

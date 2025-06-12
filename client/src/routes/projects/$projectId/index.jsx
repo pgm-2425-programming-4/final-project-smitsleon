@@ -17,27 +17,19 @@ function ProjectDetailComponent() {
   // Convert projectId to number for API calls
   const numericProjectId = parseInt(projectId, 10);
 
-  // Fetch the projects data to find the active project
+  // Fetch the projects data to find the project
   const { data: projectsData } = useQuery({
     queryKey: ["projects"],
     queryFn: fetchProjects,
   });
 
-  // Find the active project from the projects list
-  const activeProject = projectsData?.data?.find(
+  // Find the project from the projects list
+  const project = projectsData?.data?.find(
     (project) => project.id === numericProjectId,
   );
 
-  // Handle both formats: project.attributes.ProjectName and project.ProjectName
-  const projectName = activeProject?.attributes?.ProjectName || activeProject?.ProjectName || "Loading...";
-
-  // Handle both formats for isActive
-  const isActive = activeProject?.attributes?.isActive ?? activeProject?.isActive;
-  const statusText = activeProject
-    ? isActive
-      ? "Active Project"
-      : "Inactive Project"
-    : "Project not found";
+  // Handle both formats: project.attributes.name and project.name
+  const projectName = project?.attributes?.name || project?.name || "Loading...";
 
   // Toggle between backlog and kanban views
   const toggleView = (view) => {
@@ -65,7 +57,7 @@ function ProjectDetailComponent() {
     setIsTaskModalOpen(false);
   };
 
-  if (!activeProject && projectsData?.data) {
+  if (!project && projectsData?.data) {
     return (
       <div className="project-not-found">
         <header className="header">
@@ -85,7 +77,6 @@ function ProjectDetailComponent() {
       <header className="header">
         <div className="header__project">
           <h1 className="header__title">{projectName}</h1>
-          <span className="header__subtitle">{statusText}</span>
         </div>
         <div className="header__actions">
           <div className="header__view-toggle">
@@ -107,11 +98,8 @@ function ProjectDetailComponent() {
           <button
             className="button button--primary"
             onClick={handleAddTaskClick}
-            disabled={!activeProject}
+            disabled={!project}
           >
-            <span className="icon">
-              <img src="/styles/images/icons/plus.svg" alt="Add" />
-            </span>
             Add Task
           </button>
         </div>
