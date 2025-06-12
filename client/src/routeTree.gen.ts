@@ -11,37 +11,156 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
+import { Route as AboutImport } from './routes/about'
+import { Route as IndexImport } from './routes/index'
+import { Route as ProjectsProjectIdImport } from './routes/projects/$projectId'
+import { Route as ProjectsProjectIdIndexImport } from './routes/projects/$projectId/index'
+import { Route as ProjectsProjectIdBacklogImport } from './routes/projects/$projectId/backlog'
 
 // Create/Update Routes
+
+const AboutRoute = AboutImport.update({
+  id: '/about',
+  path: '/about',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const IndexRoute = IndexImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const ProjectsProjectIdRoute = ProjectsProjectIdImport.update({
+  id: '/projects/$projectId',
+  path: '/projects/$projectId',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const ProjectsProjectIdIndexRoute = ProjectsProjectIdIndexImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => ProjectsProjectIdRoute,
+} as any)
+
+const ProjectsProjectIdBacklogRoute = ProjectsProjectIdBacklogImport.update({
+  id: '/backlog',
+  path: '/backlog',
+  getParentRoute: () => ProjectsProjectIdRoute,
+} as any)
 
 // Populate the FileRoutesByPath interface
 
 declare module '@tanstack/react-router' {
-  interface FileRoutesByPath {}
+  interface FileRoutesByPath {
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexImport
+      parentRoute: typeof rootRoute
+    }
+    '/about': {
+      id: '/about'
+      path: '/about'
+      fullPath: '/about'
+      preLoaderRoute: typeof AboutImport
+      parentRoute: typeof rootRoute
+    }
+    '/projects/$projectId': {
+      id: '/projects/$projectId'
+      path: '/projects/$projectId'
+      fullPath: '/projects/$projectId'
+      preLoaderRoute: typeof ProjectsProjectIdImport
+      parentRoute: typeof rootRoute
+    }
+    '/projects/$projectId/backlog': {
+      id: '/projects/$projectId/backlog'
+      path: '/backlog'
+      fullPath: '/projects/$projectId/backlog'
+      preLoaderRoute: typeof ProjectsProjectIdBacklogImport
+      parentRoute: typeof ProjectsProjectIdImport
+    }
+    '/projects/$projectId/': {
+      id: '/projects/$projectId/'
+      path: '/'
+      fullPath: '/projects/$projectId/'
+      preLoaderRoute: typeof ProjectsProjectIdIndexImport
+      parentRoute: typeof ProjectsProjectIdImport
+    }
+  }
 }
 
 // Create and export the route tree
 
-export interface FileRoutesByFullPath {}
+interface ProjectsProjectIdRouteChildren {
+  ProjectsProjectIdBacklogRoute: typeof ProjectsProjectIdBacklogRoute
+  ProjectsProjectIdIndexRoute: typeof ProjectsProjectIdIndexRoute
+}
 
-export interface FileRoutesByTo {}
+const ProjectsProjectIdRouteChildren: ProjectsProjectIdRouteChildren = {
+  ProjectsProjectIdBacklogRoute: ProjectsProjectIdBacklogRoute,
+  ProjectsProjectIdIndexRoute: ProjectsProjectIdIndexRoute,
+}
+
+const ProjectsProjectIdRouteWithChildren =
+  ProjectsProjectIdRoute._addFileChildren(ProjectsProjectIdRouteChildren)
+
+export interface FileRoutesByFullPath {
+  '/': typeof IndexRoute
+  '/about': typeof AboutRoute
+  '/projects/$projectId': typeof ProjectsProjectIdRouteWithChildren
+  '/projects/$projectId/backlog': typeof ProjectsProjectIdBacklogRoute
+  '/projects/$projectId/': typeof ProjectsProjectIdIndexRoute
+}
+
+export interface FileRoutesByTo {
+  '/': typeof IndexRoute
+  '/about': typeof AboutRoute
+  '/projects/$projectId/backlog': typeof ProjectsProjectIdBacklogRoute
+  '/projects/$projectId': typeof ProjectsProjectIdIndexRoute
+}
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
+  '/': typeof IndexRoute
+  '/about': typeof AboutRoute
+  '/projects/$projectId': typeof ProjectsProjectIdRouteWithChildren
+  '/projects/$projectId/backlog': typeof ProjectsProjectIdBacklogRoute
+  '/projects/$projectId/': typeof ProjectsProjectIdIndexRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: never
+  fullPaths:
+    | '/'
+    | '/about'
+    | '/projects/$projectId'
+    | '/projects/$projectId/backlog'
+    | '/projects/$projectId/'
   fileRoutesByTo: FileRoutesByTo
-  to: never
-  id: '__root__'
+  to: '/' | '/about' | '/projects/$projectId/backlog' | '/projects/$projectId'
+  id:
+    | '__root__'
+    | '/'
+    | '/about'
+    | '/projects/$projectId'
+    | '/projects/$projectId/backlog'
+    | '/projects/$projectId/'
   fileRoutesById: FileRoutesById
 }
 
-export interface RootRouteChildren {}
+export interface RootRouteChildren {
+  IndexRoute: typeof IndexRoute
+  AboutRoute: typeof AboutRoute
+  ProjectsProjectIdRoute: typeof ProjectsProjectIdRouteWithChildren
+}
 
-const rootRouteChildren: RootRouteChildren = {}
+const rootRouteChildren: RootRouteChildren = {
+  IndexRoute: IndexRoute,
+  AboutRoute: AboutRoute,
+  ProjectsProjectIdRoute: ProjectsProjectIdRouteWithChildren,
+}
 
 export const routeTree = rootRoute
   ._addFileChildren(rootRouteChildren)
@@ -52,7 +171,32 @@ export const routeTree = rootRoute
   "routes": {
     "__root__": {
       "filePath": "__root.jsx",
-      "children": []
+      "children": [
+        "/",
+        "/about",
+        "/projects/$projectId"
+      ]
+    },
+    "/": {
+      "filePath": "index.jsx"
+    },
+    "/about": {
+      "filePath": "about.jsx"
+    },
+    "/projects/$projectId": {
+      "filePath": "projects/$projectId.jsx",
+      "children": [
+        "/projects/$projectId/backlog",
+        "/projects/$projectId/"
+      ]
+    },
+    "/projects/$projectId/backlog": {
+      "filePath": "projects/$projectId/backlog.jsx",
+      "parent": "/projects/$projectId"
+    },
+    "/projects/$projectId/": {
+      "filePath": "projects/$projectId/index.jsx",
+      "parent": "/projects/$projectId"
     }
   }
 }

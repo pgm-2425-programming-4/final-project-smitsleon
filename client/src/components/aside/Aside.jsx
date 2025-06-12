@@ -1,8 +1,12 @@
 import { useQuery } from "@tanstack/react-query";
 import { fetchProjects } from "../../queries/fetch-projects";
+import { Link, useLocation } from "@tanstack/react-router";
 import "./Aside.css";
 
-export function ProjectAside({ selectedProject, onProjectChange }) {
+export function ProjectAside() {
+  const location = useLocation();
+  const currentPath = location.pathname;
+
   const {
     isPending,
     isError,
@@ -16,8 +20,8 @@ export function ProjectAside({ selectedProject, onProjectChange }) {
   if (isPending) {
     return (
       <aside className="project-aside">
-        <h3>Projects</h3>
-        <div className="loading">Loading projects...</div>
+        <h3>Navigation</h3>
+        <div className="loading">Loading...</div>
       </aside>
     );
   }
@@ -25,7 +29,7 @@ export function ProjectAside({ selectedProject, onProjectChange }) {
   if (isError) {
     return (
       <aside className="project-aside">
-        <h3>Projects</h3>
+        <h3>Navigation</h3>
         <div className="error">Error: {error.message}</div>
       </aside>
     );
@@ -35,29 +39,56 @@ export function ProjectAside({ selectedProject, onProjectChange }) {
 
   return (
     <aside className="project-aside">
-      <h3>Projects</h3>
+      <h3>Navigation</h3>
       <nav className="project-nav">
         <ul className="project-list">
           <li>
-            <button
-              className={`project-button ${selectedProject === null ? "active" : ""}`}
-              onClick={() => onProjectChange(null)}
+            <Link
+              to="/"
+              className={`project-button ${currentPath === "/" ? "active" : ""}`}
             >
-              All Projects
-            </button>
+              🏠 Home
+            </Link>
           </li>
-          {projects.map((project) => (
-            <li key={project.id}>
-              <button
-                className={`project-button ${selectedProject === project.id ? "active" : ""}`}
-                onClick={() => onProjectChange(project.id)}
+          <li>
+            <Link
+              to="/about"
+              className={`project-button ${currentPath === "/about" ? "active" : ""}`}
+            >
+              ℹ️ About
+            </Link>
+          </li>{" "}
+          <li className="divider">
+            <span>Projects</span>
+          </li>
+          {projects.length > 0 ? (
+            projects.map((project) => (              <li key={project.id}>
+                <Link
+                  to="/projects/$projectId"
+                  params={{ projectId: project.id.toString() }}
+                  className={`project-button ${currentPath.startsWith(`/projects/${project.id}`) ? "active" : ""}`}
+                >
+                  📁 {project.name}
+                </Link>
+              </li>
+            ))
+          ) : (
+            <li>
+              <div
+                style={{
+                  padding: "0.75rem 1rem",
+                  color: "#6c757d",
+                  fontSize: "0.9rem",
+                  fontStyle: "italic",
+                }}
               >
-                {project.name}
-              </button>
+                Geen projecten beschikbaar
+              </div>
             </li>
-          ))}
-        </ul>
+          )}        </ul>
       </nav>
     </aside>
   );
 }
+
+export default ProjectAside;
