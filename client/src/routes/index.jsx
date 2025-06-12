@@ -8,8 +8,7 @@ export const Route = createFileRoute("/")({
 function RouteComponent() {
   return (
     <div className="page-container">
-      <h1 className="page-title">Welcome to Task Manager</h1>
-      <AddTaskForm />
+      <h1 className="page-title">Welcome to the Jammin Task Manager</h1>
     </div>
   );
 }
