@@ -3,70 +3,43 @@ import { useQuery } from "@tanstack/react-query";
 import { fetchProjects } from "../../../queries/fetch-projects";
 import { PaginatedBackLog } from "../../../components/paginated-backlog/paginated-backlog";
 import AddTaskForm from "../../../components/AddTaskForm";
-import { useState, useEffect, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 
-function ProjectDetailComponent() {
+function ProjectOverview() {
   const { projectId } = Route.useParams();
-  const [isTaskModalOpen, setIsTaskModalOpen] = useState(false);
-  const [activeView, setActiveView] = useState("backlog");
+  const [showTaskModal, setShowTaskModal] = useState(false);
+  const [currentTab, setCurrentTab] = useState("backlog");
+  const backlogSection = useRef(null);
+  const kanbanSection = useRef(null);
+  const idAsNumber = Number(projectId);
 
-  // Element refs for the view sections
-  const backlogRef = useRef(null);
-  const kanbanRef = useRef(null);
-
-  // Convert projectId to number for API calls
-  const numericProjectId = parseInt(projectId, 10);
-
-  // Fetch the projects data to find the project
-  const { data: projectsData } = useQuery({
+  const { data: allProjects } = useQuery({
     queryKey: ["projects"],
     queryFn: fetchProjects,
   });
 
-  // Find the project from the projects list
-  const project = projectsData?.data?.find(
-    (project) => project.id === numericProjectId,
-  );
+  const foundProject = allProjects?.data?.find((prj) => prj.id === idAsNumber);
+  const naam =
+    foundProject?.attributes?.name || foundProject?.name || "Laden...";
 
-  // Handle both formats: project.attributes.name and project.name
-  const projectName =
-    project?.attributes?.name || project?.name || "Loading...";
+  const switchTab = (tab) => setCurrentTab(tab);
 
-  // Toggle between backlog and kanban views
-  const toggleView = (view) => {
-    setActiveView(view);
-  };
-
-  // Update the view visibility when activeView changes
   useEffect(() => {
-    if (backlogRef.current && kanbanRef.current) {
-      if (activeView === "backlog") {
-        backlogRef.current.style.display = "block";
-        kanbanRef.current.style.display = "none";
-      } else {
-        backlogRef.current.style.display = "none";
-        kanbanRef.current.style.display = "block";
-      }
+    if (backlogSection.current && kanbanSection.current) {
+      backlogSection.current.style.display =
+        currentTab === "backlog" ? "block" : "none";
+      kanbanSection.current.style.display =
+        currentTab === "kanban" ? "block" : "none";
     }
-  }, [activeView]);
+  }, [currentTab]);
 
-  const handleAddTaskClick = () => {
-    setIsTaskModalOpen(true);
-  };
-
-  const handleCloseModal = () => {
-    setIsTaskModalOpen(false);
-  };
-
-  if (!project && projectsData?.data) {
+  if (!foundProject && allProjects?.data) {
     return (
       <div className="project-not-found">
         <header className="header">
           <div className="header__project">
-            <h1 className="header__title">Project Not Found</h1>
-            <span className="header__subtitle">
-              The requested project could not be found
-            </span>
+            <h1 className="header__title">Project niet gevonden</h1>
+            <span className="header__subtitle">Dit project bestaat niet.</span>
           </div>
         </header>
       </div>
@@ -77,59 +50,54 @@ function ProjectDetailComponent() {
     <>
       <header className="header">
         <div className="header__project">
-          <h1 className="header__title">{projectName}</h1>
+          <h1 className="header__title">{naam}</h1>
         </div>
         <div className="header__actions">
           <div className="header__view-toggle">
             <button
-              className={`view-toggle__button ${activeView === "backlog" ? "view-toggle__button--active" : ""}`}
-              onClick={() => toggleView("backlog")}
-              data-view="backlog"
+              className={`view-toggle__button${currentTab === "backlog" ? " view-toggle__button--active" : ""}`}
+              onClick={() => switchTab("backlog")}
             >
               Backlog
             </button>
             <button
-              className={`view-toggle__button ${activeView === "kanban" ? "view-toggle__button--active" : ""}`}
-              onClick={() => toggleView("kanban")}
-              data-view="kanban"
+              className={`view-toggle__button${currentTab === "kanban" ? " view-toggle__button--active" : ""}`}
+              onClick={() => switchTab("kanban")}
             >
               Kanban
             </button>
           </div>
           <button
             className="button button--primary"
-            onClick={handleAddTaskClick}
-            disabled={!project}
+            onClick={() => setShowTaskModal(true)}
+            disabled={!foundProject}
           >
-            Add Task
+            Nieuwe taak
           </button>
         </div>
       </header>
-
-      {/* Backlog View */}
+      {/* Backlog */}
       <div
-        ref={backlogRef}
-        style={{ display: activeView === "backlog" ? "block" : "none" }}
+        ref={backlogSection}
+        style={{ display: currentTab === "backlog" ? "block" : "none" }}
       >
-        <PaginatedBackLog selectedProject={numericProjectId} />
+        <PaginatedBackLog selectedProject={idAsNumber} />
       </div>
-
-      {/* Kanban View */}
+      {/* Kanban */}
       <div
-        ref={kanbanRef}
-        style={{ display: activeView === "kanban" ? "block" : "none" }}
+        ref={kanbanSection}
+        style={{ display: currentTab === "kanban" ? "block" : "none" }}
       >
         <div style={{ padding: "2rem", textAlign: "center" }}>
-          <h2>Kanban View</h2>
-          <p>Kanban functionaliteit komt binnenkort beschikbaar.</p>
+          <h2>Kanban</h2>
+          <p>Kanban-functionaliteit volgt binnenkort.</p>
         </div>
       </div>
-
-      {isTaskModalOpen && (
+      {showTaskModal && (
         <AddTaskForm
-          onClose={handleCloseModal}
-          currentProjectId={numericProjectId}
-          projects={projectsData?.data || []}
+          onClose={() => setShowTaskModal(false)}
+          currentProjectId={idAsNumber}
+          projects={allProjects?.data || []}
         />
       )}
     </>
@@ -137,5 +105,5 @@ function ProjectDetailComponent() {
 }
 
 export const Route = createFileRoute("/projects/$projectId/")({
-  component: ProjectDetailComponent,
+  component: ProjectOverview,
 });

@@ -5,80 +5,59 @@ import { fetchProjects } from "../../../queries/fetch-projects";
 import { PaginatedBackLog } from "../../../components/paginated-backlog/paginated-backlog";
 import AddTaskForm from "../../../components/AddTaskForm";
 
-function ProjectBacklogComponent() {
+function ProjectBacklog() {
   const { projectId } = Route.useParams();
-  const [isTaskModalOpen, setIsTaskModalOpen] = useState(false);
+  const [showModal, setShowModal] = useState(false);
 
-  // Fetch the projects data to find the project
-  const { data: projectsData } = useQuery({
+  const { data: projectList } = useQuery({
     queryKey: ["projects"],
     queryFn: fetchProjects,
   });
 
-  // Find the project from the projects list
-  const project = projectsData?.data?.find(
-    (project) => project.id === parseInt(projectId),
+  const project = projectList?.data?.find(
+    (item) => String(item.id) === String(projectId),
   );
-
-  const projectName =
-    project?.attributes?.name || project?.name || "No Project Selected";
-
-  const handleAddTaskClick = () => {
-    setIsTaskModalOpen(true);
-  };
-
-  const handleCloseModal = () => {
-    setIsTaskModalOpen(false);
-  };
+  const naam = project?.attributes?.name || project?.name || "Onbekend project";
 
   return (
-    <>
+    <section className="project-backlog">
       <header className="header">
-        <div className="header__project">
-          <h1 className="header__title">{projectName}</h1>
-        </div>
+        <h2 className="header__title">Backlog van: {naam}</h2>
         <div className="header__actions">
-          <div className="header__view-toggle">
-            <Link
-              to="/projects/$projectId/backlog"
-              params={{ projectId }}
-              className="view-toggle__button"
-              activeProps={{
-                className: "view-toggle__button view-toggle__button--active",
-              }}
-            >
-              Backlog
-            </Link>
-            <Link
-              to="/projects/$projectId"
-              params={{ projectId }}
-              className="view-toggle__button"
-            >
-              Kanban
-            </Link>
-          </div>
+          <Link
+            to="/projects/$projectId/backlog"
+            params={{ projectId }}
+            className="view-toggle__button view-toggle__button--active"
+          >
+            Backlog
+          </Link>
+          <Link
+            to="/projects/$projectId"
+            params={{ projectId }}
+            className="view-toggle__button"
+          >
+            Kanban
+          </Link>
           <button
             className="button button--primary"
-            onClick={handleAddTaskClick}
+            onClick={() => setShowModal(true)}
           >
-            Add Task
+            Taak toevoegen
           </button>
         </div>
       </header>
-
       <PaginatedBackLog selectedProject={parseInt(projectId)} />
-
-      {isTaskModalOpen && (
+      {showModal && (
         <AddTaskForm
-          onClose={handleCloseModal}
+          onClose={() => setShowModal(false)}
           currentProjectId={parseInt(projectId)}
-          projects={projectsData?.data || []}
+          projects={projectList?.data || []}
         />
       )}
-    </>
+    </section>
   );
 }
 
 export const Route = createFileRoute("/projects/$projectId/backlog")({
-  component: ProjectBacklogComponent,
+  component: ProjectBacklog,
 });
