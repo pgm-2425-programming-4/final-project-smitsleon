@@ -47,7 +47,6 @@ export default function AddTaskForm({ onClose, currentProjectId, projects }) {
       onClose();
     },
     onError: (error) => {
-      console.error("Error creating task:", error);
       alert(
         "Er is een fout opgetreden bij het aanmaken van de taak: " +
           error.message,

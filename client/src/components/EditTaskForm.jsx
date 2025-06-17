@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { updateTask } from "../queries/task-operator";
+import { updateTask, deleteTask } from "../queries/task-operator";
 import { fetchTaskStates } from "../queries/fetch-task-states";
 import { fetchLabels } from "../queries/fetch-labels";
 
@@ -21,17 +21,8 @@ export default function EditTaskForm({ task, onClose, projects }) {
   // Initialize form with task data
   useEffect(() => {
     if (task) {
-      setTitle(task.title || "");
-
-      // Handle description (blocks format from Strapi)
-      if (task.description && Array.isArray(task.description)) {
-        const textContent = task.description
-          .map((block) => block?.children?.map((child) => child?.text).join(""))
-          .join(" ");
-        setDescription(textContent);
-      } else {
-        setDescription(task.description || "");
-      }
+      setTitle(task.title || ""); // Handle description (now text format)
+      setDescription(task.description || "");
 
       // Handle due date
       if (task.dueDate) {
@@ -77,9 +68,26 @@ export default function EditTaskForm({ task, onClose, projects }) {
       onClose();
     },
     onError: (error) => {
-      console.error("Error updating task:", error);
       alert(
         "Er is een fout opgetreden bij het bijwerken van de taak: " +
+          error.message,
+      );
+    },
+  });
+
+  // Mutation for deleting tasks
+  const deleteTaskMutation = useMutation({
+    mutationFn: (documentId) => deleteTask(documentId),
+    onSuccess: () => {
+      // Invalidate and refetch relevant queries
+      queryClient.invalidateQueries({ queryKey: ["kanbanTasks"] });
+      queryClient.invalidateQueries({ queryKey: ["backlogTasks"] });
+
+      onClose();
+    },
+    onError: (error) => {
+      alert(
+        "Er is een fout opgetreden bij het verwijderen van de taak: " +
           error.message,
       );
     },
@@ -263,6 +271,26 @@ export default function EditTaskForm({ task, onClose, projects }) {
             </button>
           </div>
         </form>
+
+        <div className="modal__footer">
+          <button
+            className="button button--danger"
+            onClick={() => {
+              if (
+                window.confirm(
+                  "Weet je zeker dat je deze taak wilt verwijderen?",
+                )
+              ) {
+                deleteTaskMutation.mutate(task.documentId);
+              }
+            }}
+            disabled={deleteTaskMutation.isPending}
+          >
+            {deleteTaskMutation.isPending
+              ? "Verwijderen..."
+              : "Taak Verwijderen"}
+          </button>
+        </div>
       </div>
     </div>
   );

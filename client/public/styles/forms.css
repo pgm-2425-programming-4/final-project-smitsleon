@@ -102,6 +102,14 @@
   border-top: 1px solid #e9ecef;
 }
 
+.modal__footer {
+  margin-top: 1.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid #e9ecef;
+  display: flex;
+  justify-content: center;
+}
+
 /* Labels grid styling */
 .labels-grid {
   display: grid;

@@ -75,6 +75,26 @@
   font-size: 0.8rem;
   line-height: 1.4;
   margin-bottom: 0.75rem;
+  position: relative;
+  cursor: help;
+}
+
+.kanban-task__description:hover::after {
+  content: attr(title);
+  position: absolute;
+  bottom: 100%;
+  left: 0;
+  z-index: 1000;
+  background-color: #333;
+  color: white;
+  padding: 0.5rem;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  white-space: normal;
+  max-width: 250px;
+  word-wrap: break-word;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  opacity: 0.95;
 }
 
 .kanban-task__meta {
