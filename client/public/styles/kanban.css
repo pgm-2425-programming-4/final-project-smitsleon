@@ -94,28 +94,6 @@
   color: #6c757d;
 }
 
-.kanban-task__priority {
-  padding: 0.2rem 0.5rem;
-  border-radius: 4px;
-  font-weight: 600;
-  text-transform: uppercase;
-}
-
-.kanban-task__priority--high {
-  background-color: #f8d7da;
-  color: #721c24;
-}
-
-.kanban-task__priority--medium {
-  background-color: #fff3cd;
-  color: #856404;
-}
-
-.kanban-task__priority--low {
-  background-color: #d1ecf1;
-  color: #0c5460;
-}
-
 .kanban-placeholder {
   text-align: center;
   padding: 2rem;
