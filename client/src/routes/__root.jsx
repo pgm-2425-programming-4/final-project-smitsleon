@@ -8,11 +8,6 @@ export const Route = createRootRoute({
       <div className="app">
         <Sidebar />
         <main className="main-content">
-          <header className="header">
-            <div className="search-container">
-              <input type="text" placeholder="Search tasks..." className="search-input" />
-            </div>
-          </header>
           <Outlet />
         </main>
       </div>
