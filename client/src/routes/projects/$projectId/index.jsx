@@ -1,13 +1,11 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { KanbanBoard } from "../../../components/kanban-board/KanbanBoard";
 
-// Placeholder for Kanban view content
+// Kanban view for a specific project
 function KanbanView() {
-  return (
-    <div style={{ padding: "2rem", textAlign: "center" }}>
-      <h2>Kanban</h2>
-      <p>Kanban-functionaliteit volgt binnenkort.</p>
-    </div>
-  );
+  const { projectId } = Route.useParams();
+
+  return <KanbanBoard selectedProject={parseInt(projectId)} />;
 }
 
 export const Route = createFileRoute("/projects/$projectId/")({

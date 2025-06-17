@@ -1,0 +1,179 @@
+import { useQuery } from "@tanstack/react-query";
+import { fetchKanbanTasks } from "../../queries/fetch-kanban-tasks";
+import { fetchTaskStates } from "../../queries/fetch-task-states";
+
+function KanbanCard({ task }) {
+  const formatDate = (dateString) => {
+    if (!dateString) return null;
+    return new Date(dateString).toLocaleDateString("nl-NL", {
+      day: "numeric",
+      month: "short",
+      year: "numeric",
+    });
+  };
+
+  // Safety check
+  if (!task) {
+    return null;
+  }
+
+  return (
+    <div className="kanban-task">
+      <div className="kanban-task__title">{task.title || "Geen titel"}</div>
+      {task.description && Array.isArray(task.description) && (
+        <div className="kanban-task__description">
+          {/* Simple text rendering for blocks content */}
+          {task.description
+            .map((block) =>
+              block?.children?.map((child) => child?.text).join(""),
+            )
+            .join(" ")}
+        </div>
+      )}
+      <div className="kanban-task__meta">
+        {task.dueDate && <span>Due: {formatDate(task.dueDate)}</span>}
+        {task.labels?.length > 0 && (
+          <div>
+            {task.labels.map((label) => (
+              <span
+                key={label.id}
+                style={{
+                  marginLeft: "0.25rem",
+                  fontSize: "0.7rem",
+                  backgroundColor: "#e9ecef",
+                  padding: "0.1rem 0.3rem",
+                  borderRadius: "3px",
+                }}
+              >
+                {label.name || "Geen naam"}
+              </span>
+            ))}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+function KanbanColumn({ status, tasks }) {
+  // Safety check
+  if (!status) {
+    return null;
+  }
+
+  return (
+    <div className="kanban-column">
+      <div className="kanban-column__header">
+        <h3 className="kanban-column__title">{status.name}</h3>
+        <span className="kanban-column__count">{tasks.length}</span>
+      </div>
+      <div className="kanban-tasks">
+        {tasks.length === 0 ? (
+          <div className="kanban-placeholder">
+            <p>Geen taken in deze status</p>
+          </div>
+        ) : (
+          tasks.map((task) => <KanbanCard key={task.id} task={task} />)
+        )}
+      </div>
+    </div>
+  );
+}
+
+export function KanbanBoard({ selectedProject }) {
+  const {
+    data: kanbanTasks,
+    isPending: tasksLoading,
+    isError: tasksError,
+    error: tasksErrorMessage,
+  } = useQuery({
+    queryKey: ["kanbanTasks", selectedProject],
+    queryFn: () => fetchKanbanTasks(selectedProject),
+    enabled: !!selectedProject,
+  });
+
+  const {
+    data: taskStates,
+    isPending: statesLoading,
+    isError: statesError,
+  } = useQuery({
+    queryKey: ["taskStates"],
+    queryFn: fetchTaskStates,
+  });
+
+  if (!selectedProject) {
+    return (
+      <div className="kanban-placeholder">
+        <h3>Geen project geselecteerd</h3>
+        <p>Selecteer een project om het kanban-board te bekijken.</p>
+      </div>
+    );
+  }
+
+  if (tasksLoading || statesLoading) {
+    return (
+      <div className="kanban-placeholder">
+        <p>Loading kanban board...</p>
+      </div>
+    );
+  }
+
+  if (tasksError || statesError) {
+    return (
+      <div className="kanban-placeholder">
+        <p>Error loading kanban board: {tasksErrorMessage?.message}</p>
+      </div>
+    );
+  }
+
+  // Group tasks by status
+  const tasksByStatus = {};
+
+  // Initialize all statuses with empty arrays
+  if (taskStates && Array.isArray(taskStates)) {
+    taskStates.forEach((status) => {
+      if (status && status.id) {
+        tasksByStatus[status.id] = [];
+      }
+    });
+  } // Group tasks by their status with comprehensive error handling
+  if (kanbanTasks && kanbanTasks.data && Array.isArray(kanbanTasks.data)) {
+    kanbanTasks.data.forEach((task) => {
+      // Add comprehensive safety checks for the task structure
+      if (!task) {
+        return;
+      }
+
+      // Now safely access task_status (direct on task, not task.attributes)
+      const taskStatus = task.task_status;
+      if (!taskStatus) {
+        return;
+      }
+
+      const statusId = taskStatus.id;
+
+      if (statusId && tasksByStatus[statusId]) {
+        tasksByStatus[statusId].push(task);
+      }
+    });
+  }
+  return (
+    <div className="kanban-board">
+      {taskStates && Array.isArray(taskStates) ? (
+        taskStates
+          .filter((status) => status.name !== "Backlog") // Exclude Backlog status
+          .map((status) => (
+            <KanbanColumn
+              key={status.id}
+              status={status}
+              tasks={tasksByStatus[status.id] || []}
+            />
+          ))
+      ) : (
+        <div className="kanban-placeholder">
+          <p>No task states available</p>
+        </div>
+      )}
+    </div>
+  );
+}
