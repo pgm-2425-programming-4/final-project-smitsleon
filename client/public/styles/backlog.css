@@ -1,12 +1,33 @@
+/* Backlog header with count */
+.backlog-header {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid #e9ecef;
+}
+
+.backlog-header h2 {
+  margin: 0;
+  color: hsl(0, 0%, 20%);
+  font-size: 1.5rem;
+}
+
+.backlog-count {
+  background-color: #4a90e2;
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  min-width: 60px;
+  text-align: center;
+}
+
 /* Backlog Component Styling */
 .backlog-list {
   margin-bottom: 2rem;
-}
-
-.backlog-list h2 {
-  margin-bottom: 1rem;
-  color: hsl(0, 0%, 20%);
-  font-size: 1.5rem;
 }
 
 .task-list {
