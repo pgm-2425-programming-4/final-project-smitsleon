@@ -30,15 +30,12 @@ export default function AddTaskForm({ onClose, currentProjectId, projects }) {
 
   const labels = labelsData?.data || [];
 
-  // Mutation for creating tasks
   const createTaskMutation = useMutation({
     mutationFn: createTask,
     onSuccess: () => {
-      // Invalidate and refetch relevant queries
       queryClient.invalidateQueries({ queryKey: ["kanbanTasks"] });
       queryClient.invalidateQueries({ queryKey: ["backlogTasks"] });
 
-      // Reset form and close modal
       setTitle("");
       setDescription("");
       setDueDate("");
@@ -67,7 +64,6 @@ export default function AddTaskForm({ onClose, currentProjectId, projects }) {
       return;
     }
 
-    // Find default status (Backlog) if no status selected
     const defaultStatus = taskStates?.find(
       (status) => status.name === "Backlog",
     );
@@ -78,7 +74,6 @@ export default function AddTaskForm({ onClose, currentProjectId, projects }) {
       return;
     }
 
-    // Prepare task data for Strapi v5
     const taskData = {
       title: title.trim(),
       description: description.trim() || null,

@@ -18,7 +18,6 @@ function ProjectLayout() {
   const queryClient = useQueryClient();
   const [showModal, setShowModal] = useState(false);
 
-  // Determine active view based on current pathname
   const isKanbanActive =
     location.pathname === `/projects/${projectId}/` ||
     location.pathname === `/projects/${projectId}`;
@@ -31,7 +30,6 @@ function ProjectLayout() {
   });
   const deleteProjectMutation = useMutation({
     mutationFn: async (projectId) => {
-      // Try to use the documentId if available, otherwise use id
       const deleteId = project?.documentId || project?.id || projectId;
 
       const response = await fetch(`${API_URL}/projects/${deleteId}`, {
@@ -44,18 +42,16 @@ function ProjectLayout() {
         );
       }
 
-      // Check if response has content before trying to parse JSON
       const contentType = response.headers.get("content-type");
       if (contentType && contentType.includes("application/json")) {
         return response.json();
       }
 
-      // Return empty object if no JSON content
       return {};
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["projects"] });
-      navigate({ to: "/" }); // Redirect to home after deletion
+      navigate({ to: "/" });
     },
     onError: (error) => {
       console.error("Error deleting project:", error);

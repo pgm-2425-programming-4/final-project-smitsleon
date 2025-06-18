@@ -21,13 +21,12 @@ export default function EditTaskForm({ task, onClose, projects }) {
   // Initialize form with task data
   useEffect(() => {
     if (task) {
-      setTitle(task.title || ""); // Handle description (now text format)
+      setTitle(task.title || "");
       setDescription(task.description || "");
 
-      // Handle due date
       if (task.dueDate) {
         const date = new Date(task.dueDate);
-        setDueDate(date.toISOString().slice(0, 16)); // Format for datetime-local input
+        setDueDate(date.toISOString().slice(0, 16));
       }
 
       // Handle project
@@ -57,11 +56,9 @@ export default function EditTaskForm({ task, onClose, projects }) {
 
   const labels = labelsData?.data || [];
 
-  // Mutation for updating tasks
   const updateTaskMutation = useMutation({
     mutationFn: ({ documentId, taskData }) => updateTask(documentId, taskData),
     onSuccess: () => {
-      // Invalidate and refetch relevant queries
       queryClient.invalidateQueries({ queryKey: ["kanbanTasks"] });
       queryClient.invalidateQueries({ queryKey: ["backlogTasks"] });
 
@@ -75,11 +72,9 @@ export default function EditTaskForm({ task, onClose, projects }) {
     },
   });
 
-  // Mutation for deleting tasks
   const deleteTaskMutation = useMutation({
     mutationFn: (documentId) => deleteTask(documentId),
     onSuccess: () => {
-      // Invalidate and refetch relevant queries
       queryClient.invalidateQueries({ queryKey: ["kanbanTasks"] });
       queryClient.invalidateQueries({ queryKey: ["backlogTasks"] });
 
@@ -111,7 +106,6 @@ export default function EditTaskForm({ task, onClose, projects }) {
       return;
     }
 
-    // Prepare task data for Strapi v5
     const taskData = {
       title: title.trim(),
       description: description.trim() || null,

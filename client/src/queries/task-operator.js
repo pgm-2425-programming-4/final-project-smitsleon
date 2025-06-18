@@ -1,4 +1,3 @@
-// Task operations for Strapi v5
 import { API_TOKEN, API_URL } from "../constants/constants";
 
 export async function createTask(taskData) {

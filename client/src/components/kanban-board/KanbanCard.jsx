@@ -8,7 +8,6 @@ export default function KanbanCard({ task, onTaskClick }) {
     });
   };
 
-  // Safety check
   if (!task) {
     return null;
   }

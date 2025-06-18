@@ -95,7 +95,6 @@ export function ProjectAside() {
         <AddProjectForm
           onClose={() => setShowAddProjectForm(false)}
           onSuccess={() => {
-            // Project created successfully
           }}
         />
       )}

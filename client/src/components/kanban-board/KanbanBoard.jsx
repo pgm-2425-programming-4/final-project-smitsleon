@@ -59,13 +59,11 @@ export function KanbanBoard({ selectedProject }) {
     queryFn: fetchTaskStates,
   });
 
-  // Fetch projects for the edit form
   const { data: projectList } = useQuery({
     queryKey: ["projects"],
     queryFn: fetchProjects,
   });
 
-  // Fetch labels for filtering
   const { data: labelsList } = useQuery({
     queryKey: ["labels"],
     queryFn: fetchLabels,
@@ -79,18 +77,14 @@ export function KanbanBoard({ selectedProject }) {
     setEditingTask(null);
   };
 
-  // Memoized filtered tasks
   const filteredTasks = useMemo(() => {
     if (!kanbanTasks?.data) return [];
     return kanbanTasks.data.filter((task) => {
-      // Handle search term matching
       const titleText = task.title?.toLowerCase() || "";
 
-      // Handle description text extraction (both text and blocks format)
       let descriptionText = "";
       if (task.description) {
         if (Array.isArray(task.description)) {
-          // Handle blocks format
           descriptionText = task.description
             .map((block) =>
               block?.children?.map((child) => child?.text).join(""),
@@ -98,7 +92,6 @@ export function KanbanBoard({ selectedProject }) {
             .join(" ")
             .toLowerCase();
         } else {
-          // Handle text format
           descriptionText = task.description.toLowerCase();
         }
       }
@@ -146,22 +139,19 @@ export function KanbanBoard({ selectedProject }) {
   // Group tasks by status
   const tasksByStatus = {};
 
-  // Initialize all statuses with empty arrays
   if (taskStates && Array.isArray(taskStates)) {
     taskStates.forEach((status) => {
       if (status && status.id) {
         tasksByStatus[status.id] = [];
       }
     });
-  } // Group tasks by their status with comprehensive error handling
+  }
   if (filteredTasks && Array.isArray(filteredTasks)) {
     filteredTasks.forEach((task) => {
-      // Add comprehensive safety checks for the task structure
       if (!task) {
         return;
       }
 
-      // Now safely access task_status (direct on task, not task.attributes)
       const taskStatus = task.task_status;
       if (!taskStatus) {
         return;

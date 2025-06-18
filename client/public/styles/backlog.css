@@ -1,4 +1,3 @@
-/* Backlog Component Styling - Dark Theme */
 .backlog-list {
   margin-bottom: 2rem;
 }
@@ -31,7 +30,7 @@
   cursor: pointer;
 }
 
-/* Task item styling for clickable tasks - Dark Theme */
+/* Task item for clickable tasks */
 .task-item--clickable {
   cursor: pointer;
   transition: all 0.3s ease;

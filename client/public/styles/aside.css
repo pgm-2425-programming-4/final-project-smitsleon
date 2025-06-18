@@ -1,4 +1,3 @@
-/* Aside Component Styling - Dark Theme */
 .project-aside {
   width: 250px;
   min-height: 100vh;
@@ -73,7 +72,6 @@
   background-color: var(--color-accent-hover);
 }
 
-/* Add New Project Button - Dark Theme */
 .project-button--add {
   display: block;
   width: 100%;
