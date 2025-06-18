@@ -54,26 +54,18 @@
 }
 
 .kanban-task {
-  background: linear-gradient(
-    145deg,
-    rgba(255, 255, 255, 0.08),
-    rgba(255, 255, 255, 0.05)
-  );
+  background-color: var(--color-card-bg);
   border: 1px solid var(--color-border);
   border-radius: 10px;
   padding: 1.25rem;
   cursor: pointer;
   transition: all 0.3s ease;
-
   position: relative;
-  
 }
 
 .kanban-task:hover {
   border-color: var(--color-accent);
 }
-
-
 
 .kanban-task__title {
   font-weight: 700;
@@ -94,11 +86,11 @@
 
 .kanban-task__meta {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  flex-direction: column;
+  gap: 0.5rem;
   font-size: 0.75rem;
   color: var(--color-text-secondary);
-  gap: 0.5rem;
+  margin-top: 0.75rem;
 }
 
 .kanban-placeholder {
@@ -109,6 +101,24 @@
   background: rgba(255, 255, 255, 0.03);
   border-radius: 12px;
   border: 1px solid var(--color-border);
+}
+
+/* Task labels styling - Dark Theme */
+.kanban-task__labels {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.kanban-task__label {
+  background-color: var(--color-accent);
+  color: var(--color-text-primary);
+  font-size: 0.75rem;
+  font-weight: 500;
+  padding: 0.25rem 0.5rem;
+  border-radius: 6px;
+  border: 1px solid var(--color-accent-hover);
 }
 
 /* Kanban Filters - Dark Theme */
@@ -177,7 +187,6 @@
   color: var(--color-text-secondary);
 
   position: relative;
-  
 }
 
 .kanban-label-filter:hover {

@@ -38,7 +38,6 @@
   border-radius: 10px;
   padding: 0.25rem;
   border: 1px solid var(--color-border);
-  
 }
 
 .view-toggle__button {
@@ -54,7 +53,6 @@
   text-decoration: none;
   display: inline-block;
   position: relative;
-  
 }
 
 .view-toggle__button:hover {
