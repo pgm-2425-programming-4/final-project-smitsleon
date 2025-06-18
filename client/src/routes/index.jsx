@@ -1,5 +1,4 @@
 import { createFileRoute } from "@tanstack/react-router";
-import AddTaskForm from "../components/AddTaskForm";
 
 export const Route = createFileRoute("/")({
   component: RouteComponent,

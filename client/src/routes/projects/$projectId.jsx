@@ -75,15 +75,18 @@ function ProjectLayout() {
   const project = projectList?.data?.find(
     (item) => String(item.id) === String(projectId),
   );
-  const projectName = project?.attributes?.name || project?.name || "Laden...";
+  const projectName =
+    project?.attributes?.name || project?.name || "Loading...";
 
   if (projectList && !project) {
     return (
       <div className="project-not-found">
         <header className="header">
           <div className="header__project">
-            <h1 className="header__title">Project niet gevonden</h1>
-            <span className="header__subtitle">Dit project bestaat niet.</span>
+            <h1 className="header__title">Project not found</h1>
+            <span className="header__subtitle">
+              This project does not exist.
+            </span>
           </div>
         </header>
       </div>

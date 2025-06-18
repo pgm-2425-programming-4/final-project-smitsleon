@@ -85,9 +85,7 @@ export function ProjectAside() {
             ))
           ) : (
             <li>
-              <div className="project-empty-state">
-                Geen projecten beschikbaar
-              </div>
+              <div className="project-empty-state">No projects available</div>
             </li>
           )}{" "}
         </ul>
