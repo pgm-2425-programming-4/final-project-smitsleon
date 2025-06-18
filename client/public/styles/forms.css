@@ -4,7 +4,8 @@
   top: 0;
   left: 0;
   right: 0;
-  bottom: 0;  background-color: rgba(0, 0, 0, 0.8);
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.8);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -13,7 +14,7 @@
 }
 
 .modal {
-  background: linear-gradient(145deg, var(--color-card-bg), #2f2f2f);
+  background-color: var(--color-card-bg);
   border-radius: 16px;
   padding: 2rem;
   width: 90%;
@@ -40,14 +41,6 @@
   font-size: 1.5rem;
   font-weight: 700;
   color: var(--color-text-primary);
-  background: linear-gradient(
-    135deg,
-    var(--color-text-primary),
-    var(--color-accent)
-  );
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
 }
 
 .modal__close {
