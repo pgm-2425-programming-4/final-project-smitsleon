@@ -1,14 +1,7 @@
 export function BacklogList({ backlogTasks, onTaskClick }) {
-  const taskCount = backlogTasks?.length || 0;
-  
   return (
     <div className="backlog-list">
-      <div className="backlog-header">
-        <h2>Backlog Tasks</h2>
-        <span className="backlog-count">
-          {taskCount} {taskCount === 1 ? 'item' : 'items'}
-        </span>
-      </div>
+      <h2>Backlog Tasks</h2>
       <ul className="task-list">
         {backlogTasks.map((backlogTask) => (
           <li
