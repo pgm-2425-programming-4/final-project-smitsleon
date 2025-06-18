@@ -1,0 +1,174 @@
+/* About Page Styling - Dark Theme */
+.about-page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+  background-color: var(--color-bg-primary);
+  color: var(--color-text-primary);
+}
+
+.about-header {
+  text-align: center;
+  margin-bottom: 3rem;
+  padding: 2rem 0;
+  border-bottom: 2px solid var(--color-accent);
+}
+
+.about-title {
+  font-size: 3rem;
+  font-weight: 800;
+  color: var(--color-text-primary);
+  margin: 0 0 1rem 0;
+  letter-spacing: 0.5px;
+}
+
+.about-content {
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+}
+
+.about-section {
+  background-color: var(--color-card-bg);
+  border: 1px solid var(--color-border);
+  border-radius: 16px;
+  padding: 2.5rem;
+  transition: all 0.3s ease;
+}
+
+.about-section:hover {
+  border-color: var(--color-accent);
+}
+
+.section-title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  margin: 0 0 1.5rem 0;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.project-description {
+  font-size: 1.1rem;
+  line-height: 1.7;
+  color: var(--color-text-primary);
+  margin: 0;
+}
+
+
+/* Contact Section */
+.contact-section {
+  border: 2px solid var(--color-accent);
+}
+
+.contact-card {
+  display: flex;
+  justify-content: center;
+  margin-top: 1rem;
+}
+
+.contact-info {
+  text-align: center;
+  max-width: 600px;
+}
+
+.contact-name {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  margin: 0 0 0.5rem 0;
+}
+
+.contact-role {
+  font-size: 1.1rem;
+  color: var(--color-text-primary);
+  font-weight: 600;
+  margin: 0 0 0.25rem 0;
+}
+
+.contact-school {
+  font-size: 1rem;
+  color: var(--color-text-secondary);
+  margin: 0 0 2rem 0;
+  font-style: italic;
+}
+
+.contact-details {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  align-items: center;
+}
+
+.contact-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  background-color: rgba(255, 255, 255, 0.1);
+  padding: 0.75rem 1.5rem;
+  border-radius: 25px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transition: all 0.3s ease;
+}
+
+.contact-item:hover {
+  background-color: rgba(255, 255, 255, 0.15);
+  border-color: var(--color-accent);
+}
+
+.contact-icon {
+  font-size: 1.2rem;
+}
+
+.contact-link {
+  color: var(--color-text-primary);
+  text-decoration: none;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.contact-link:hover {
+  color: var(--color-accent);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .about-page {
+    padding: 1rem;
+  }
+
+  .about-title {
+    font-size: 2.25rem;
+  }
+
+  .about-section {
+    padding: 1.5rem;
+  }
+
+  .contact-details {
+    align-items: stretch;
+  }
+
+  .contact-item {
+    justify-content: center;
+  }
+}
+
+@media (max-width: 576px) {
+  .about-page {
+    padding: 0.75rem;
+  }
+
+  .about-title {
+    font-size: 1.75rem;
+  }
+
+  .about-section {
+    padding: 1rem;
+  }
+
+  .contact-name {
+    font-size: 1.5rem;
+  }
+}

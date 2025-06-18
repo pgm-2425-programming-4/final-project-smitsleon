@@ -6,28 +6,48 @@ export const Route = createFileRoute("/about")({
 
 function RouteComponent() {
   return (
-    <div className="page-container">
-      <h1>Over Dit Project</h1>
-      <p>
-        Dit is een taakbeheer applicatie gebouwd met React, TanStack Router en
-        TanStack Query.
-      </p>
-      <h2>Features</h2>
-      <ul>
-        <li>✅ Projectbeheer</li>
-        <li>✅ Taakbeheer met paginatie</li>
-        <li>✅ Real-time data fetching</li>
-        <li>✅ Responsive design</li>
-        <li>✅ Modern routing</li>
-      </ul>
-      <h2>Technologieën</h2>
-      <ul>
-        <li>React 18</li>
-        <li>TanStack Router</li>
-        <li>TanStack Query</li>
-        <li>Vite</li>
-        <li>Strapi (Backend)</li>
-      </ul>
+    <div className="about-page">
+      <div className="about-header">
+        <h1 className="about-title">About This Project</h1>
+      </div>
+
+      <div className="about-content">
+        <section className="about-section">
+          <p className="project-description">
+            This task management application was developed as part of the
+            Programming Graduate program at Arteveldehogeschool. The project
+            demonstrates modern web development techniques by implementing a
+            fully functional kanban board and backlog system. The application
+            provides an intuitive interface for project management, where users
+            can create, edit, and organize tasks across different projects. With
+            real-time data synchronization, it offers a professional experience
+            for task management.
+          </p>
+        </section>
+
+        <section className="about-section contact-section">
+          <h2 className="section-title">Contact</h2>
+          <div className="contact-card">
+            <div className="contact-info">
+              <h3 className="contact-name">Leon Smits</h3>
+              <p className="contact-role">Programming Graduate Student</p>
+              <p className="contact-school">Arteveldehogeschool - Ghent</p>
+
+              <div className="contact-details">
+                <div className="contact-item">
+                  <span className="contact-icon">📧</span>
+                  <a
+                    href="mailto:leonsmi@student.arteveldehs.be"
+                    className="contact-link"
+                  >
+                    leonsmi@student.arteveldehs.be
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
     </div>
   );
 }
