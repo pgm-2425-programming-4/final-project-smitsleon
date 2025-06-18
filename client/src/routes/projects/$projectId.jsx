@@ -20,16 +20,14 @@ function ProjectLayout() {
     queryKey: ["projects"],
     queryFn: fetchProjects,
   });
-  const deleteProjectMutation = useMutation({    mutationFn: async (projectId) => {
+  const deleteProjectMutation = useMutation({
+    mutationFn: async (projectId) => {
       // Try to use the documentId if available, otherwise use id
       const deleteId = project?.documentId || project?.id || projectId;
-      
-      const response = await fetch(
-        `${API_URL}/projects/${deleteId}`,
-        {
-          method: "DELETE",
-        },
-      );
+
+      const response = await fetch(`${API_URL}/projects/${deleteId}`, {
+        method: "DELETE",
+      });
 
       if (!response.ok) {
         throw new Error(
