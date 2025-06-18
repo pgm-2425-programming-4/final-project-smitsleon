@@ -120,17 +120,17 @@ function ProjectLayout() {
               onClick={() => setShowModal(true)}
               disabled={!project}
             >
-              Taak toevoegen
+              Add new task
             </button>
             <button
               className="button button--danger"
               onClick={handleDeleteProject}
               disabled={!project || deleteProjectMutation.isPending}
-              title="Project verwijderen"
+              title="deleting project"
             >
               {deleteProjectMutation.isPending
-                ? "Verwijderen..."
-                : "Verwijder project"}
+                ? "Deleting..."
+                : "Delete project"}
             </button>
           </div>
         </div>
