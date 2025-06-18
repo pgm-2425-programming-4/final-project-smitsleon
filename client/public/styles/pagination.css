@@ -35,7 +35,7 @@
   color: var(--color-text-secondary);
   cursor: not-allowed;
   border-color: var(--color-border);
-  opacity: 0.5;
+  opacity: 0.6;
 }
 
 .pagination-list {
