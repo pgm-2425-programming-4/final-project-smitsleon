@@ -7,6 +7,7 @@ import {
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { fetchProjects } from "../../queries/fetch-projects";
+import { API_URL } from "../../constants/constants";
 import AddTaskForm from "../../components/AddTaskForm";
 
 function ProjectLayout() {
@@ -19,26 +20,15 @@ function ProjectLayout() {
     queryKey: ["projects"],
     queryFn: fetchProjects,
   });
-  const deleteProjectMutation = useMutation({
-    mutationFn: async (projectId) => {
-      console.log("Attempting to delete project with ID:", projectId);
-      console.log("Full project object:", project);
-
+  const deleteProjectMutation = useMutation({    mutationFn: async (projectId) => {
       // Try to use the documentId if available, otherwise use id
       const deleteId = project?.documentId || project?.id || projectId;
-      console.log("Using delete ID:", deleteId);
-
+      
       const response = await fetch(
-        `http://localhost:1337/api/projects/${deleteId}`,
+        `${API_URL}/projects/${deleteId}`,
         {
           method: "DELETE",
         },
-      );
-
-      console.log("Delete response status:", response.status);
-      console.log(
-        "Delete response headers:",
-        Object.fromEntries(response.headers.entries()),
       );
 
       if (!response.ok) {

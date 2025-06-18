@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { API_URL } from "../constants/constants";
 
 export function AddProjectForm({ onClose, onSuccess }) {
   const [name, setName] = useState("");
@@ -8,7 +9,7 @@ export function AddProjectForm({ onClose, onSuccess }) {
 
   const createProjectMutation = useMutation({
     mutationFn: async (projectData) => {
-      const response = await fetch("http://localhost:1337/api/projects", {
+      const response = await fetch(`${API_URL}/projects`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
