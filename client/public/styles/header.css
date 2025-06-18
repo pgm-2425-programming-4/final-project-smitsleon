@@ -67,6 +67,34 @@
   background-color: #357ab8 !important;
 }
 
+.header__buttons {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.button--danger {
+  background-color: #dc3545;
+  color: white;
+  border: 1px solid #dc3545;
+  min-width: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.button--danger:hover {
+  background-color: #c82333;
+  border-color: #bd2130;
+}
+
+.button--danger:disabled {
+  background-color: #6c757d;
+  border-color: #6c757d;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
 /* Responsive Header Design */
 @media (max-width: 992px) {
   .header {
@@ -79,6 +107,10 @@
   .header__actions {
     width: 100%;
     justify-content: space-between;
+  }
+
+  .header__buttons {
+    gap: 0.5rem;
   }
 
   .header__title {
@@ -99,6 +131,11 @@
 
   .header__view-toggle {
     width: 100%;
+  }
+
+  .header__buttons {
+    width: 100%;
+    justify-content: space-between;
   }
 
   .view-toggle__button {

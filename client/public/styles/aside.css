@@ -67,6 +67,55 @@
   border-color: #357ab8;
 }
 
+/* Project Management Buttons */
+.project-button--add {
+  width: 100%;
+  text-align: left;
+  background-color: transparent !important;
+  border: 1px dashed #dee2e6 !important;
+  border-radius: 6px;
+  padding: 0.75rem 1rem;
+  color: #6c757d;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: inherit;
+}
+
+.project-button--add:hover {
+  border-color: #4a90e2 !important;
+  color: #4a90e2 !important;
+  background-color: rgba(74, 144, 226, 0.05) !important;
+}
+
+.project-item-container {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  position: relative;
+}
+
+.project-delete-btn {
+  background: transparent;
+  border: none;
+  color: #dc3545;
+  cursor: pointer;
+  padding: 0.25rem;
+  font-size: 0.8rem;
+  border-radius: 3px;
+  transition: background-color 0.2s ease;
+  opacity: 0.7;
+}
+
+.project-delete-btn:hover {
+  background-color: #f8d7da;
+  opacity: 1;
+}
+
+.project-item-container:hover .project-delete-btn {
+  opacity: 1;
+}
+
 .loading,
 .error {
   padding: 1rem;

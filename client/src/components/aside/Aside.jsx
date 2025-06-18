@@ -1,10 +1,13 @@
 import { useQuery } from "@tanstack/react-query";
 import { fetchProjects } from "../../queries/fetch-projects";
 import { Link, useLocation } from "@tanstack/react-router";
+import { useState } from "react";
+import { AddProjectForm } from "../AddProjectForm";
 
 export function ProjectAside() {
   const location = useLocation();
   const currentPath = location.pathname;
+  const [showAddProjectForm, setShowAddProjectForm] = useState(false);
 
   const {
     isPending,
@@ -60,6 +63,34 @@ export function ProjectAside() {
           <li className="divider">
             <span>Projects</span>
           </li>
+          <li>
+            <button
+              className="project-button project-button--add"
+              onClick={() => setShowAddProjectForm(true)}
+              style={{
+                width: "100%",
+                textAlign: "left",
+                backgroundColor: "transparent",
+                border: "1px dashed #dee2e6",
+                borderRadius: "6px",
+                padding: "0.75rem 1rem",
+                color: "#6c757d",
+                fontSize: "0.9rem",
+                cursor: "pointer",
+                transition: "all 0.2s ease",
+              }}
+              onMouseEnter={(e) => {
+                e.target.style.borderColor = "#4a90e2";
+                e.target.style.color = "#4a90e2";
+              }}
+              onMouseLeave={(e) => {
+                e.target.style.borderColor = "#dee2e6";
+                e.target.style.color = "#6c757d";
+              }}
+            >
+              ➕ Add New Project
+            </button>
+          </li>{" "}
           {projects.length > 0 ? (
             projects.map((project) => (
               <li key={project.id}>
@@ -88,6 +119,15 @@ export function ProjectAside() {
           )}{" "}
         </ul>
       </nav>
+
+      {showAddProjectForm && (
+        <AddProjectForm
+          onClose={() => setShowAddProjectForm(false)}
+          onSuccess={() => {
+            console.log("Project created successfully!");
+          }}
+        />
+      )}
     </aside>
   );
 }
