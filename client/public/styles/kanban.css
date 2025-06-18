@@ -76,25 +76,6 @@
   line-height: 1.4;
   margin-bottom: 0.75rem;
   position: relative;
-  cursor: help;
-}
-
-.kanban-task__description:hover::after {
-  content: attr(title);
-  position: absolute;
-  bottom: 100%;
-  left: 0;
-  z-index: 1000;
-  background-color: #333;
-  color: white;
-  padding: 0.5rem;
-  border-radius: 4px;
-  font-size: 0.75rem;
-  white-space: normal;
-  max-width: 250px;
-  word-wrap: break-word;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-  opacity: 0.95;
 }
 
 .kanban-task__meta {
@@ -121,6 +102,96 @@
 .kanban-task--dragging {
   opacity: 0.5;
   transform: rotate(5deg);
+}
+
+/* Kanban Filters */
+.kanban-filters {
+  background-color: #f8f9fa;
+  border: 1px solid #e9ecef;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+
+.kanban-filters__search {
+  margin-bottom: 1rem;
+}
+
+.kanban-search-input {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  transition: border-color 0.2s ease;
+}
+
+.kanban-search-input:focus {
+  outline: none;
+  border-color: #4a90e2;
+  box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.2);
+}
+
+.kanban-filters__labels {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.kanban-filters__label-title {
+  font-weight: 600;
+  color: #2c3e50;
+  font-size: 0.9rem;
+}
+
+.kanban-label-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.kanban-label-filter {
+  background-color: white;
+  border: 1px solid #ddd;
+  border-radius: 16px;
+  padding: 0.4rem 0.8rem;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: #6c757d;
+}
+
+.kanban-label-filter:hover {
+  border-color: #4a90e2;
+  color: #4a90e2;
+}
+
+.kanban-label-filter.active {
+  background-color: #4a90e2;
+  border-color: #4a90e2;
+  color: white;
+}
+
+@media (min-width: 768px) {
+  .kanban-filters {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+  }
+
+  .kanban-filters__search {
+    margin-bottom: 0;
+  }
+
+  .kanban-filters__labels {
+    flex-direction: row;
+    align-items: center;
+    white-space: nowrap;
+  }
+
+  .kanban-search-input {
+    max-width: 300px;
+  }
 }
 
 /* Responsive Design */

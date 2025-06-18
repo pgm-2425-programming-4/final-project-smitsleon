@@ -1,69 +1,12 @@
 import { useQuery } from "@tanstack/react-query";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { fetchKanbanTasks } from "../../queries/fetch-kanban-tasks";
 import { fetchTaskStates } from "../../queries/fetch-task-states";
 import { fetchProjects } from "../../queries/fetch-projects";
+import { fetchLabels } from "../../queries/fetch-labels";
 import EditTaskForm from "../EditTaskForm";
-
-function KanbanCard({ task, onTaskClick }) {
-  const formatDate = (dateString) => {
-    if (!dateString) return null;
-    return new Date(dateString).toLocaleDateString("nl-NL", {
-      day: "numeric",
-      month: "short",
-      year: "numeric",
-    });
-  };
-
-  // Safety check
-  if (!task) {
-    return null;
-  }
-  return (
-    <div
-      className="kanban-task"
-      onClick={() => onTaskClick(task)}
-      style={{ cursor: "pointer" }}
-    >
-      <div className="kanban-task__title">{task.title || "Geen titel"}</div>{" "}
-      {task.description && (
-        <div
-          className="kanban-task__description"
-          title={
-            Array.isArray(task.description)
-              ? task.description
-                  .map((block) =>
-                    block?.children?.map((child) => child?.text).join(""),
-                  )
-                  .join(" ")
-              : task.description
-          }
-        ></div>
-      )}
-      <div className="kanban-task__meta">
-        {task.dueDate && <span>Due: {formatDate(task.dueDate)}</span>}
-        {task.labels?.length > 0 && (
-          <div>
-            {task.labels.map((label) => (
-              <span
-                key={label.id}
-                style={{
-                  marginLeft: "0.25rem",
-                  fontSize: "0.7rem",
-                  backgroundColor: "#e9ecef",
-                  padding: "0.1rem 0.3rem",
-                  borderRadius: "3px",
-                }}
-              >
-                {label.name || "Geen naam"}
-              </span>
-            ))}
-          </div>
-        )}
-      </div>
-    </div>
-  );
-}
+import KanbanFilters from "./KanbanFilters";
+import KanbanCard from "./KanbanCard";
 
 function KanbanColumn({ status, tasks, onTaskClick }) {
   // Safety check
@@ -93,6 +36,8 @@ function KanbanColumn({ status, tasks, onTaskClick }) {
 
 export function KanbanBoard({ selectedProject }) {
   const [editingTask, setEditingTask] = useState(null);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedLabels, setSelectedLabels] = useState([]);
 
   const {
     data: kanbanTasks,
@@ -120,6 +65,12 @@ export function KanbanBoard({ selectedProject }) {
     queryFn: fetchProjects,
   });
 
+  // Fetch labels for filtering
+  const { data: labelsList } = useQuery({
+    queryKey: ["labels"],
+    queryFn: fetchLabels,
+  });
+
   const handleTaskClick = (task) => {
     setEditingTask(task);
   };
@@ -127,6 +78,45 @@ export function KanbanBoard({ selectedProject }) {
   const handleCloseEdit = () => {
     setEditingTask(null);
   };
+
+  // Memoized filtered tasks
+  const filteredTasks = useMemo(() => {
+    if (!kanbanTasks?.data) return [];
+    return kanbanTasks.data.filter((task) => {
+      // Handle search term matching
+      const titleText = task.title?.toLowerCase() || "";
+
+      // Handle description text extraction (both text and blocks format)
+      let descriptionText = "";
+      if (task.description) {
+        if (Array.isArray(task.description)) {
+          // Handle blocks format
+          descriptionText = task.description
+            .map((block) =>
+              block?.children?.map((child) => child?.text).join(""),
+            )
+            .join(" ")
+            .toLowerCase();
+        } else {
+          // Handle text format
+          descriptionText = task.description.toLowerCase();
+        }
+      }
+
+      const matchesSearchTerm =
+        !searchTerm ||
+        titleText.includes(searchTerm.toLowerCase()) ||
+        descriptionText.includes(searchTerm.toLowerCase());
+      const matchesLabelFilter =
+        selectedLabels.length === 0 ||
+        (task.labels &&
+          task.labels.some((label) =>
+            selectedLabels.includes(label.documentId),
+          ));
+
+      return matchesSearchTerm && matchesLabelFilter;
+    });
+  }, [kanbanTasks?.data, searchTerm, selectedLabels]);
 
   if (!selectedProject) {
     return (
@@ -164,8 +154,8 @@ export function KanbanBoard({ selectedProject }) {
       }
     });
   } // Group tasks by their status with comprehensive error handling
-  if (kanbanTasks && kanbanTasks.data && Array.isArray(kanbanTasks.data)) {
-    kanbanTasks.data.forEach((task) => {
+  if (filteredTasks && Array.isArray(filteredTasks)) {
+    filteredTasks.forEach((task) => {
       // Add comprehensive safety checks for the task structure
       if (!task) {
         return;
@@ -186,6 +176,13 @@ export function KanbanBoard({ selectedProject }) {
   }
   return (
     <>
+      <KanbanFilters
+        searchTerm={searchTerm}
+        setSearchTerm={setSearchTerm}
+        selectedLabels={selectedLabels}
+        setSelectedLabels={setSelectedLabels}
+        labels={labelsList?.data}
+      />
       <div className="kanban-board">
         {taskStates && Array.isArray(taskStates) ? (
           taskStates
