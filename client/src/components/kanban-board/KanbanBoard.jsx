@@ -22,7 +22,7 @@ function KanbanColumn({ status, tasks, onTaskClick }) {
       <div className="kanban-tasks">
         {tasks.length === 0 ? (
           <div className="kanban-placeholder">
-            <p>Geen taken in deze status</p>
+            <p>No tasks yet</p>
           </div>
         ) : (
           tasks.map((task) => (
