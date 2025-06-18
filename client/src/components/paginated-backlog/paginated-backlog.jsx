@@ -61,19 +61,10 @@ export function PaginatedBackLog({ selectedProject = null }) {
   const handleCloseEdit = () => {
     setEditingTask(null);
   };
-
   // Show message if no project is selected
   if (!selectedProject) {
     return (
-      <div
-        style={{
-          padding: "2rem",
-          textAlign: "center",
-          backgroundColor: "#f8f9fa",
-          border: "1px solid #dee2e6",
-          borderRadius: "8px",
-        }}
-      >
+      <div className="no-project-selected">
         <h3>Geen project geselecteerd</h3>
         <p>Selecteer een project uit de sidebar om de backlog te bekijken.</p>
       </div>
@@ -95,10 +86,9 @@ export function PaginatedBackLog({ selectedProject = null }) {
       </div>
     );
   }
-
   return (
     <div className="backlog-content">
-      <div style={{ marginBottom: "2rem" }}>
+      <div className="backlog-list-container">
         <BacklogList
           backlogTasks={backlogTasks}
           onTaskClick={handleTaskClick}

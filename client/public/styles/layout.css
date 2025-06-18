@@ -144,3 +144,26 @@ body {
 .visible {
   display: block;
 }
+
+/* Page containers and states */
+.page-container {
+  padding: 2rem;
+}
+
+.no-project-selected {
+  padding: 2rem;
+  text-align: center;
+  background-color: var(--color-card-bg);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  color: var(--color-text-primary);
+}
+
+.no-project-selected h3 {
+  color: var(--color-text-primary);
+  margin-bottom: 1rem;
+}
+
+.no-project-selected p {
+  color: var(--color-text-secondary);
+}

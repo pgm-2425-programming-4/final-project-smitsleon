@@ -6,7 +6,7 @@ export const Route = createFileRoute("/about")({
 
 function RouteComponent() {
   return (
-    <div style={{ padding: "2rem" }}>
+    <div className="page-container">
       <h1>Over Dit Project</h1>
       <p>
         Dit is een taakbeheer applicatie gebouwd met React, TanStack Router en

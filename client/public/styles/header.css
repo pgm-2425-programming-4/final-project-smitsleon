@@ -59,14 +59,14 @@
   color: var(--color-text-primary);
 }
 
-.view-toggle__button--active {
-  background-color: var(--color-accent) !important;
-  color: var(--color-text-primary) !important;
+.header__view-toggle .view-toggle__button--active {
+  background-color: var(--color-accent);
+  color: var(--color-text-primary);
   font-weight: 600;
 }
 
-.view-toggle__button--active:hover {
-  background-color: var(--color-accent-hover) !important;
+.header__view-toggle .view-toggle__button--active:hover {
+  background-color: var(--color-accent-hover);
 }
 
 .header__buttons {

@@ -62,31 +62,11 @@ export function ProjectAside() {
           </li>{" "}
           <li className="divider">
             <span>Projects</span>
-          </li>
+          </li>{" "}
           <li>
             <button
-              className="project-button project-button--add"
+              className="project-button--add"
               onClick={() => setShowAddProjectForm(true)}
-              style={{
-                width: "100%",
-                textAlign: "left",
-                backgroundColor: "transparent",
-                border: "1px dashed #dee2e6",
-                borderRadius: "6px",
-                padding: "0.75rem 1rem",
-                color: "#6c757d",
-                fontSize: "0.9rem",
-                cursor: "pointer",
-                transition: "all 0.2s ease",
-              }}
-              onMouseEnter={(e) => {
-                e.target.style.borderColor = "#4a90e2";
-                e.target.style.color = "#4a90e2";
-              }}
-              onMouseLeave={(e) => {
-                e.target.style.borderColor = "#dee2e6";
-                e.target.style.color = "#6c757d";
-              }}
             >
               Add New Project
             </button>
@@ -105,14 +85,7 @@ export function ProjectAside() {
             ))
           ) : (
             <li>
-              <div
-                style={{
-                  padding: "0.75rem 1rem",
-                  color: "#6c757d",
-                  fontSize: "0.9rem",
-                  fontStyle: "italic",
-                }}
-              >
+              <div className="project-empty-state">
                 Geen projecten beschikbaar
               </div>
             </li>
@@ -122,7 +95,8 @@ export function ProjectAside() {
 
       {showAddProjectForm && (
         <AddProjectForm
-          onClose={() => setShowAddProjectForm(false)}          onSuccess={() => {
+          onClose={() => setShowAddProjectForm(false)}
+          onSuccess={() => {
             // Project created successfully
           }}
         />

@@ -12,13 +12,8 @@ export default function KanbanCard({ task, onTaskClick }) {
   if (!task) {
     return null;
   }
-
   return (
-    <div
-      className="kanban-task"
-      onClick={() => onTaskClick(task)}
-      style={{ cursor: "pointer" }}
-    >
+    <div className="kanban-task" onClick={() => onTaskClick(task)}>
       <div className="kanban-task__title">{task.title || "Geen titel"}</div>
       {task.description && (
         <div

@@ -62,3 +62,7 @@
   position: relative;
   opacity: 0.9;
 }
+
+.backlog-list-container {
+  margin-bottom: 2rem;
+}
