@@ -49,7 +49,7 @@ export function ProjectAside() {
               to="/"
               className={`project-button ${currentPath === "/" ? "active" : ""}`}
             >
-              🏠 Home
+              Home
             </Link>
           </li>
           <li>
@@ -57,38 +57,18 @@ export function ProjectAside() {
               to="/about"
               className={`project-button ${currentPath === "/about" ? "active" : ""}`}
             >
-              ℹ️ About
+              About
             </Link>
           </li>{" "}
           <li className="divider">
             <span>Projects</span>
-          </li>
+          </li>{" "}
           <li>
             <button
-              className="project-button project-button--add"
+              className="project-button--add"
               onClick={() => setShowAddProjectForm(true)}
-              style={{
-                width: "100%",
-                textAlign: "left",
-                backgroundColor: "transparent",
-                border: "1px dashed #dee2e6",
-                borderRadius: "6px",
-                padding: "0.75rem 1rem",
-                color: "#6c757d",
-                fontSize: "0.9rem",
-                cursor: "pointer",
-                transition: "all 0.2s ease",
-              }}
-              onMouseEnter={(e) => {
-                e.target.style.borderColor = "#4a90e2";
-                e.target.style.color = "#4a90e2";
-              }}
-              onMouseLeave={(e) => {
-                e.target.style.borderColor = "#dee2e6";
-                e.target.style.color = "#6c757d";
-              }}
             >
-              ➕ Add New Project
+              Add New Project
             </button>
           </li>{" "}
           {projects.length > 0 ? (
@@ -99,22 +79,13 @@ export function ProjectAside() {
                   params={{ projectId: project.id.toString() }}
                   className={`project-button ${currentPath.startsWith(`/projects/${project.id}`) ? "active" : ""}`}
                 >
-                  📁 {project.name}
+                  {project.name}
                 </Link>
               </li>
             ))
           ) : (
             <li>
-              <div
-                style={{
-                  padding: "0.75rem 1rem",
-                  color: "#6c757d",
-                  fontSize: "0.9rem",
-                  fontStyle: "italic",
-                }}
-              >
-                Geen projecten beschikbaar
-              </div>
+              <div className="project-empty-state">No projects available</div>
             </li>
           )}{" "}
         </ul>
@@ -122,8 +93,8 @@ export function ProjectAside() {
 
       {showAddProjectForm && (
         <AddProjectForm
-          onClose={() => setShowAddProjectForm(false)}          onSuccess={() => {
-            // Project created successfully
+          onClose={() => setShowAddProjectForm(false)}
+          onSuccess={() => {
           }}
         />
       )}

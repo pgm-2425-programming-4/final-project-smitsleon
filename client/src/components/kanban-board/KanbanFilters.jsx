@@ -18,7 +18,7 @@ export default function KanbanFilters({
       <div className="kanban-filters__search">
         <input
           type="text"
-          placeholder="Zoek taken op titel of beschrijving..."
+          placeholder="seach tasks by title or description"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
           className="kanban-search-input"

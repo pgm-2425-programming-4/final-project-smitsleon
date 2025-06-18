@@ -30,15 +30,12 @@ export default function AddTaskForm({ onClose, currentProjectId, projects }) {
 
   const labels = labelsData?.data || [];
 
-  // Mutation for creating tasks
   const createTaskMutation = useMutation({
     mutationFn: createTask,
     onSuccess: () => {
-      // Invalidate and refetch relevant queries
       queryClient.invalidateQueries({ queryKey: ["kanbanTasks"] });
       queryClient.invalidateQueries({ queryKey: ["backlogTasks"] });
 
-      // Reset form and close modal
       setTitle("");
       setDescription("");
       setDueDate("");
@@ -67,7 +64,6 @@ export default function AddTaskForm({ onClose, currentProjectId, projects }) {
       return;
     }
 
-    // Find default status (Backlog) if no status selected
     const defaultStatus = taskStates?.find(
       (status) => status.name === "Backlog",
     );
@@ -78,7 +74,6 @@ export default function AddTaskForm({ onClose, currentProjectId, projects }) {
       return;
     }
 
-    // Prepare task data for Strapi v5
     const taskData = {
       title: title.trim(),
       description: description.trim() || null,
@@ -95,7 +90,7 @@ export default function AddTaskForm({ onClose, currentProjectId, projects }) {
     <div className="modal-overlay">
       <div className="modal">
         <div className="modal__header">
-          <h2 className="modal__title">Nieuwe Taak Toevoegen</h2>
+          <h2 className="modal__title">Add new task</h2>
           <button className="modal__close" onClick={onClose} type="button">
             ×
           </button>
@@ -119,14 +114,14 @@ export default function AddTaskForm({ onClose, currentProjectId, projects }) {
 
           <div className="form-group">
             <label htmlFor="description" className="form-label">
-              Beschrijving
+              Description
             </label>
             <textarea
               id="description"
               className="form-textarea"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              placeholder="Voer een beschrijving in..."
+              placeholder="Write a description..."
               rows={4}
             />
           </div>
@@ -161,7 +156,7 @@ export default function AddTaskForm({ onClose, currentProjectId, projects }) {
               value={selectedStatus}
               onChange={(e) => setSelectedStatus(e.target.value)}
             >
-              <option value="">Standaard (Backlog)</option>
+              <option value="">Standard (Backlog)</option>
               {taskStates?.map((status) => (
                 <option key={status.id} value={status.documentId}>
                   {status.name}
@@ -202,7 +197,7 @@ export default function AddTaskForm({ onClose, currentProjectId, projects }) {
 
           <div className="form-group">
             <label htmlFor="dueDate" className="form-label">
-              Vervaldatum
+              Due date
             </label>
             <input
               type="datetime-local"
@@ -219,14 +214,14 @@ export default function AddTaskForm({ onClose, currentProjectId, projects }) {
               className="button button--secondary"
               onClick={onClose}
             >
-              Annuleren
+              Cancel
             </button>
             <button
               type="submit"
               className="button button--primary"
               disabled={createTaskMutation.isPending}
             >
-              {createTaskMutation.isPending ? "Bezig..." : "Taak Toevoegen"}
+              {createTaskMutation.isPending ? "adding..." : "Adding task"}
             </button>
           </div>
         </form>

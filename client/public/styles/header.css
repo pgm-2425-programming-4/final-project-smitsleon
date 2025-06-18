@@ -1,11 +1,10 @@
-/* Header Component Styling */
 .header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1.5rem 0;
-  border-bottom: 1px solid #e9ecef;
+  padding-bottom: 1rem;
   margin-bottom: 2rem;
+  border-bottom: 1px solid var(--color-border);
 }
 
 .header__project {
@@ -13,16 +12,17 @@
 }
 
 .header__title {
-  font-size: 2rem;
-  font-weight: 700;
-  color: #2c3e50;
+  font-size: 2.25rem;
+  font-weight: 800;
+  color: var(--color-text-primary);
   margin: 0 0 0.25rem 0;
 }
 
 .header__subtitle {
   font-size: 0.9rem;
-  color: #6c757d;
+  color: var(--color-text-secondary);
   font-weight: 500;
+  opacity: 0.8;
 }
 
 .header__actions {
@@ -33,38 +33,40 @@
 
 .header__view-toggle {
   display: flex;
-  background-color: #f8f9fa;
-  border-radius: 6px;
+  background-color: var(--color-card-bg);
+  border-radius: 10px;
   padding: 0.25rem;
-  border: 1px solid #e9ecef;
+  border: 1px solid var(--color-border);
 }
 
 .view-toggle__button {
-  padding: 0.5rem 1rem;
+  padding: 0.625rem 1.25rem;
   background-color: transparent;
   border: none;
-  border-radius: 4px;
-  color: #495057;
+  border-radius: 8px;
+  color: var(--color-text-secondary);
   font-size: 0.9rem;
   font-weight: 500;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.3s ease;
   text-decoration: none;
   display: inline-block;
+  position: relative;
 }
 
 .view-toggle__button:hover {
-  background-color: #e9ecef;
+  background-color: rgba(255, 255, 255, 0.05);
+  color: var(--color-text-primary);
 }
 
-.view-toggle__button--active {
-  background-color: #4a90e2 !important;
-  color: white !important;
+.header__view-toggle .view-toggle__button--active {
+  background-color: var(--color-accent);
+  color: var(--color-text-primary);
   font-weight: 600;
 }
 
-.view-toggle__button--active:hover {
-  background-color: #357ab8 !important;
+.header__view-toggle .view-toggle__button--active:hover {
+  background-color: var(--color-accent-hover);
 }
 
 .header__buttons {
@@ -73,29 +75,6 @@
   gap: 0.75rem;
 }
 
-.button--danger {
-  background-color: #dc3545;
-  color: white;
-  border: 1px solid #dc3545;
-  min-width: 44px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.button--danger:hover {
-  background-color: #c82333;
-  border-color: #bd2130;
-}
-
-.button--danger:disabled {
-  background-color: #6c757d;
-  border-color: #6c757d;
-  cursor: not-allowed;
-  opacity: 0.6;
-}
-
-/* Responsive Header Design */
 @media (max-width: 992px) {
   .header {
     flex-direction: column;

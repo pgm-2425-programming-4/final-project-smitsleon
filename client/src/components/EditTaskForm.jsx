@@ -21,13 +21,12 @@ export default function EditTaskForm({ task, onClose, projects }) {
   // Initialize form with task data
   useEffect(() => {
     if (task) {
-      setTitle(task.title || ""); // Handle description (now text format)
+      setTitle(task.title || "");
       setDescription(task.description || "");
 
-      // Handle due date
       if (task.dueDate) {
         const date = new Date(task.dueDate);
-        setDueDate(date.toISOString().slice(0, 16)); // Format for datetime-local input
+        setDueDate(date.toISOString().slice(0, 16));
       }
 
       // Handle project
@@ -57,11 +56,9 @@ export default function EditTaskForm({ task, onClose, projects }) {
 
   const labels = labelsData?.data || [];
 
-  // Mutation for updating tasks
   const updateTaskMutation = useMutation({
     mutationFn: ({ documentId, taskData }) => updateTask(documentId, taskData),
     onSuccess: () => {
-      // Invalidate and refetch relevant queries
       queryClient.invalidateQueries({ queryKey: ["kanbanTasks"] });
       queryClient.invalidateQueries({ queryKey: ["backlogTasks"] });
 
@@ -69,17 +66,15 @@ export default function EditTaskForm({ task, onClose, projects }) {
     },
     onError: (error) => {
       alert(
-        "Er is een fout opgetreden bij het bijwerken van de taak: " +
+        "an error occured while deleting the task " +
           error.message,
       );
     },
   });
 
-  // Mutation for deleting tasks
   const deleteTaskMutation = useMutation({
     mutationFn: (documentId) => deleteTask(documentId),
     onSuccess: () => {
-      // Invalidate and refetch relevant queries
       queryClient.invalidateQueries({ queryKey: ["kanbanTasks"] });
       queryClient.invalidateQueries({ queryKey: ["backlogTasks"] });
 
@@ -87,7 +82,7 @@ export default function EditTaskForm({ task, onClose, projects }) {
     },
     onError: (error) => {
       alert(
-        "Er is een fout opgetreden bij het verwijderen van de taak: " +
+        "An error occured while deleting the task: " +
           error.message,
       );
     },
@@ -111,7 +106,6 @@ export default function EditTaskForm({ task, onClose, projects }) {
       return;
     }
 
-    // Prepare task data for Strapi v5
     const taskData = {
       title: title.trim(),
       description: description.trim() || null,
@@ -135,7 +129,7 @@ export default function EditTaskForm({ task, onClose, projects }) {
     <div className="modal-overlay">
       <div className="modal">
         <div className="modal__header">
-          <h2 className="modal__title">Taak Bewerken</h2>
+          <h2 className="modal__title">Edit task</h2>
           <button className="modal__close" onClick={onClose} type="button">
             ×
           </button>
@@ -159,14 +153,14 @@ export default function EditTaskForm({ task, onClose, projects }) {
 
           <div className="form-group">
             <label htmlFor="edit-description" className="form-label">
-              Beschrijving
+              Description
             </label>
             <textarea
               id="edit-description"
               className="form-textarea"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              placeholder="Voer een beschrijving in..."
+              placeholder="Write a description..."
               rows={4}
             />
           </div>
@@ -243,7 +237,7 @@ export default function EditTaskForm({ task, onClose, projects }) {
 
           <div className="form-group">
             <label htmlFor="edit-dueDate" className="form-label">
-              Vervaldatum
+              Due date
             </label>
             <input
               type="datetime-local"
@@ -260,14 +254,14 @@ export default function EditTaskForm({ task, onClose, projects }) {
               className="button button--secondary"
               onClick={onClose}
             >
-              Annuleren
+              Cancel
             </button>
             <button
               type="submit"
               className="button button--primary"
               disabled={updateTaskMutation.isPending}
             >
-              {updateTaskMutation.isPending ? "Bezig..." : "Taak Bijwerken"}
+              {updateTaskMutation.isPending ? "Pending..." : "Editing task"}
             </button>
           </div>
         </form>
@@ -278,7 +272,7 @@ export default function EditTaskForm({ task, onClose, projects }) {
             onClick={() => {
               if (
                 window.confirm(
-                  "Weet je zeker dat je deze taak wilt verwijderen?",
+                  "Are you sure you want to delete this task?",
                 )
               ) {
                 deleteTaskMutation.mutate(task.documentId);
@@ -287,8 +281,8 @@ export default function EditTaskForm({ task, onClose, projects }) {
             disabled={deleteTaskMutation.isPending}
           >
             {deleteTaskMutation.isPending
-              ? "Verwijderen..."
-              : "Taak Verwijderen"}
+              ? "Deleting..."
+              : "Delete task"}
           </button>
         </div>
       </div>

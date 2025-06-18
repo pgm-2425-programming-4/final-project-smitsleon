@@ -1,23 +1,26 @@
-/* Aside Component Styling */
 .project-aside {
   width: 250px;
-  min-height: 100vh;
-  background-color: #f8f9fa;
-  border-right: 1px solid #e9ecef;
+  height: 100vh;
+  background-color: var(--color-bg-secondary);
+  border-right: 1px solid var(--color-border);
   padding: 2rem 1rem;
   position: fixed;
   left: 0;
   top: 0;
   overflow-y: auto;
+  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.3);
+  z-index: 100;
 }
 
 .project-aside h3 {
   margin-bottom: 1.5rem;
-  color: #333;
-  font-size: 1.25rem;
-  font-weight: 600;
-  border-bottom: 2px solid #dee2e6;
+  color: var(--color-text-primary);
+  font-size: 1.5rem;
+  font-weight: 700;
+  border-bottom: 2px solid var(--color-accent);
   padding-bottom: 0.5rem;
+  text-align: center;
+  letter-spacing: 0.5px;
 }
 
 .project-nav {
@@ -37,55 +40,59 @@
 .project-button {
   display: block;
   width: 100%;
-  padding: 0.75rem 1rem;
-  background-color: transparent;
-  border: 1px solid #dee2e6;
-  border-radius: 6px;
-  color: #495057;
+  padding: 0.875rem 1rem;
+  background-color: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  color: var(--color-text-primary);
   font-size: 0.9rem;
   font-weight: 500;
   text-align: left;
   text-decoration: none;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.3s ease;
+
+  position: relative;
 }
 
 .project-button:hover {
-  background-color: #e9ecef;
-  border-color: #adb5bd;
+  background-color: rgba(255, 255, 255, 0.15);
+  border-color: var(--color-accent);
+  color: var(--color-text-primary);
 }
 
 .project-button.active {
-  background-color: #4a90e2;
-  border-color: #4a90e2;
-  color: white;
+  background-color: var(--color-accent);
+  border-color: var(--color-accent-hover);
+  color: var(--color-text-primary);
   font-weight: 600;
 }
 
 .project-button.active:hover {
-  background-color: #357ab8;
-  border-color: #357ab8;
+  background-color: var(--color-accent-hover);
 }
 
-/* Project Management Buttons */
 .project-button--add {
+  display: block;
   width: 100%;
-  text-align: left;
-  background-color: transparent !important;
-  border: 1px dashed #dee2e6 !important;
-  border-radius: 6px;
-  padding: 0.75rem 1rem;
-  color: #6c757d;
-  font-size: 0.9rem;
+  padding: 0.875rem 1rem;
+  background-color: rgba(228, 228, 228, 0.05);
+  border: 2px dashed var(--color-text-secondary);
+  border-radius: 8px;
+  color: var(--color-text-secondary);
+  font-size: 0.85rem;
+  font-weight: 500;
+  text-align: center;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.3s ease;
   font-family: inherit;
+  text-decoration: none;
 }
 
 .project-button--add:hover {
-  border-color: #4a90e2 !important;
-  color: #4a90e2 !important;
-  background-color: rgba(74, 144, 226, 0.05) !important;
+  background-color: rgba(228, 228, 228, 0.1);
+  border-color: var(--color-text-primary);
+  color: var(--color-text-primary);
 }
 
 .project-item-container {
@@ -98,17 +105,17 @@
 .project-delete-btn {
   background: transparent;
   border: none;
-  color: #dc3545;
+  color: var(--color-danger);
   cursor: pointer;
   padding: 0.25rem;
   font-size: 0.8rem;
-  border-radius: 3px;
-  transition: background-color 0.2s ease;
-  opacity: 0.7;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+  opacity: 0.6;
 }
 
 .project-delete-btn:hover {
-  background-color: #f8d7da;
+  background-color: var(--color-danger-bg);
   opacity: 1;
 }
 
@@ -116,31 +123,44 @@
   opacity: 1;
 }
 
-.loading,
-.error {
+.loading {
   padding: 1rem;
+  color: var(--color-text-primary);
   text-align: center;
   font-size: 0.9rem;
-  color: #6c757d;
+  font-weight: 500;
 }
 
 .error {
-  color: #dc3545;
-  background-color: #f8d7da;
-  border: 1px solid #f5c6cb;
-  border-radius: 4px;
+  padding: 1rem;
+  color: var(--color-danger);
+  background-color: var(--color-danger-bg);
+  border: 1px solid var(--color-danger-border);
+  border-radius: 8px;
+  text-align: center;
+  font-size: 0.9rem;
+  font-weight: 500;
 }
 
 .divider {
-  margin: 1rem 0 0.5rem 0;
-  padding: 0.5rem 0;
-  border-bottom: 1px solid #dee2e6;
+  margin: 1.5rem 0 1rem 0;
+  padding-top: 1rem;
+  border-top: 1px solid var(--color-border);
 }
 
 .divider span {
+  color: var(--color-text-primary);
   font-size: 0.8rem;
   font-weight: 600;
-  color: #6c757d;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
+  letter-spacing: 1px;
+}
+
+.project-empty-state {
+  padding: 0.75rem 1rem;
+  color: var(--color-text-secondary);
+  font-size: 0.9rem;
+  font-style: italic;
+  text-align: center;
+  opacity: 0.8;
 }
