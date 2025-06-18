@@ -28,7 +28,7 @@
   border: 1px solid var(--color-border);
   border-radius: 10px;
   transition: all 0.3s ease;
-  backdrop-filter: blur(10px);
+  
 }
 
 .task-item:hover {
@@ -38,8 +38,8 @@
     rgba(255, 255, 255, 0.05)
   );
   cursor: pointer;
-  transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+  
+  
 }
 
 /* Task item styling for clickable tasks - Dark Theme */
@@ -51,7 +51,7 @@
   border: 1px solid var(--color-border);
   background-color: var(--color-card-bg);
   margin-bottom: 1rem;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  
   position: relative;
   overflow: hidden;
 }
@@ -78,8 +78,8 @@
 
 .task-item--clickable:hover {
   border-color: var(--color-accent);
-  box-shadow: 0 8px 25px rgba(4, 87, 87, 0.2);
-  transform: translateY(-3px);
+  
+  
   background-color: var(--color-card-bg);
 }
 

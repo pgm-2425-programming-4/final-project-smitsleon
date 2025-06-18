@@ -60,15 +60,15 @@
     var(--color-accent-hover),
     var(--color-accent)
   );
-  transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(4, 87, 87, 0.3);
+  
+  
 }
 
 .page-button.active {
   background-color: var(--color-card-bg);
   font-weight: 800;
-  box-shadow: 0 8px 25px rgba(4, 87, 87, 0.4);
-  transform: translateY(-1px);
+  
+  
 }
 
 .pagination-list {
@@ -96,11 +96,11 @@
   font-size: 0.9rem;
   cursor: pointer;
   transition: all 0.3s ease;
-  backdrop-filter: blur(5px);
+  
 }
 
 .dropdown:focus {
   outline: none;
   border-color: #4a90e2;
-  box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.2);
+  
 }
