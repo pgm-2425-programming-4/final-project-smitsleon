@@ -1,79 +1,120 @@
-/* Button Component Styling */
+/* Button Component Styling - Dark Theme */
 .button {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  padding: 0.75rem 1.5rem;
+  padding: 0.875rem 1.75rem;
   border: none;
-  border-radius: 6px;
+  border-radius: 10px;
   font-size: 0.9rem;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.3s ease;
   text-decoration: none;
   line-height: 1;
+  position: relative;
+  overflow: hidden;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.button::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.2),
+    transparent
+  );
+  transition: left 0.5s ease;
+}
+
+.button:hover::before {
+  left: 100%;
 }
 
 .button--primary {
-  background-color: #28a745;
-  color: white;
+  background: linear-gradient(135deg, var(--color-success), #16a34a);
+  color: var(--color-text-primary);
+  border: 1px solid var(--color-success);
 }
 
 .button--primary:hover {
-  background-color: #218838;
-  transform: translateY(-1px);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background: linear-gradient(135deg, #16a34a, var(--color-success));
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(34, 197, 94, 0.3);
 }
 
 .button--primary:disabled {
-  background-color: #6c757d;
+  background: var(--color-border);
+  color: var(--color-text-secondary);
   cursor: not-allowed;
   transform: none;
   box-shadow: none;
+  opacity: 0.6;
 }
 
 .button--secondary {
-  background-color: #6c757d;
-  color: white;
+  background: var(--color-card-bg);
+  color: var(--color-text-primary);
+  border: 1px solid var(--color-border);
 }
 
 .button--secondary:hover {
-  background-color: #5a6268;
+  background: rgba(255, 255, 255, 0.1);
+  border-color: var(--color-accent);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
 }
 
 .button--outline {
   background-color: transparent;
-  color: #4a90e2;
-  border: 1px solid #4a90e2;
+  color: var(--color-accent);
+  border: 2px solid var(--color-accent);
 }
 
 .button--outline:hover {
-  background-color: #4a90e2;
-  color: white;
+  background: linear-gradient(
+    135deg,
+    var(--color-accent),
+    var(--color-accent-hover)
+  );
+  color: var(--color-text-primary);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(4, 87, 87, 0.3);
 }
 
 .button--danger {
-  background-color: #dc3545;
-  color: white;
+  background: linear-gradient(135deg, var(--color-danger), #dc2626);
+  color: var(--color-text-primary);
+  border: 1px solid var(--color-danger);
 }
 
 .button--danger:hover {
-  background-color: #c82333;
-  transform: translateY(-1px);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background: linear-gradient(135deg, #dc2626, var(--color-danger));
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(239, 68, 68, 0.3);
 }
 
 .button--danger:disabled {
-  background-color: #6c757d;
+  background: var(--color-border);
+  color: var(--color-text-secondary);
   cursor: not-allowed;
   transform: none;
   box-shadow: none;
+  opacity: 0.6;
 }
 
 .icon {
   display: flex;
   align-items: center;
   justify-content: center;
+  filter: brightness(1.1);
 }
 
 .icon img {

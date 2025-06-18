@@ -49,7 +49,7 @@ export function ProjectAside() {
               to="/"
               className={`project-button ${currentPath === "/" ? "active" : ""}`}
             >
-              🏠 Home
+              Home
             </Link>
           </li>
           <li>
@@ -57,7 +57,7 @@ export function ProjectAside() {
               to="/about"
               className={`project-button ${currentPath === "/about" ? "active" : ""}`}
             >
-              ℹ️ About
+              About
             </Link>
           </li>{" "}
           <li className="divider">
@@ -88,7 +88,7 @@ export function ProjectAside() {
                 e.target.style.color = "#6c757d";
               }}
             >
-              ➕ Add New Project
+              Add New Project
             </button>
           </li>{" "}
           {projects.length > 0 ? (
@@ -99,7 +99,7 @@ export function ProjectAside() {
                   params={{ projectId: project.id.toString() }}
                   className={`project-button ${currentPath.startsWith(`/projects/${project.id}`) ? "active" : ""}`}
                 >
-                  📁 {project.name}
+                  {project.name}
                 </Link>
               </li>
             ))
