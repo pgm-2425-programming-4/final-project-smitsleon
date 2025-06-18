@@ -19,8 +19,11 @@ function ProjectLayout() {
   const [showModal, setShowModal] = useState(false);
 
   // Determine active view based on current pathname
-  const isKanbanActive = location.pathname === `/projects/${projectId}/` || location.pathname === `/projects/${projectId}`;
-  const isBacklogActive = location.pathname === `/projects/${projectId}/backlog`;
+  const isKanbanActive =
+    location.pathname === `/projects/${projectId}/` ||
+    location.pathname === `/projects/${projectId}`;
+  const isBacklogActive =
+    location.pathname === `/projects/${projectId}/backlog`;
 
   const { data: projectList } = useQuery({
     queryKey: ["projects"],
@@ -93,18 +96,20 @@ function ProjectLayout() {
         <div className="header__project">
           <h1 className="header__title">{projectName}</h1>
         </div>{" "}
-        <div className="header__actions">          <div className="header__view-toggle">
+        <div className="header__actions">
+          {" "}
+          <div className="header__view-toggle">
             <Link
               to="/projects/$projectId/"
               params={{ projectId }}
-              className={`view-toggle__button ${isKanbanActive ? 'view-toggle__button--active' : ''}`}
+              className={`view-toggle__button ${isKanbanActive ? "view-toggle__button--active" : ""}`}
             >
               Kanban
             </Link>
             <Link
               to="/projects/$projectId/backlog"
               params={{ projectId }}
-              className={`view-toggle__button ${isBacklogActive ? 'view-toggle__button--active' : ''}`}
+              className={`view-toggle__button ${isBacklogActive ? "view-toggle__button--active" : ""}`}
             >
               Backlog
             </Link>

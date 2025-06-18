@@ -22,7 +22,8 @@
 }
 
 .button--primary:hover {
-  background-color: #16a34a;
+  background-color: var(--color-success);
+  filter: brightness(0.9);
 }
 
 .button--primary:disabled {
@@ -57,21 +58,21 @@
 }
 
 .button--danger {
-  background-color: var(--color-danger);
-  color: var(--color-text-primary);
+  background-color: var(--color-bg-primary);
+  color: var(--color-danger);
   border: 1px solid var(--color-danger);
 }
 
 .button--danger:hover {
-  background-color: #dc2626;
+  background-color: var(--color-danger);
+  color: var(--color-text-primary);
 }
 
 .button--danger:disabled {
-  background: var(--color-border);
+  background-color: var(--color-border);
+  border-color: var(--color-border);
   color: var(--color-text-secondary);
   cursor: not-allowed;
-  transform: none;
-  box-shadow: none;
   opacity: 0.6;
 }
 

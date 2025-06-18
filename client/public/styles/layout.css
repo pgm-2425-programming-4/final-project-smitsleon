@@ -87,15 +87,15 @@ body {
   justify-content: center;
   align-items: center;
   padding: 2rem;
-  color: #6c757d;
+  color: var(--color-text-secondary);
 }
 
 .loading::after {
   content: "";
   width: 20px;
   height: 20px;
-  border: 2px solid #e9ecef;
-  border-top: 2px solid #4a90e2;
+  border: 2px solid var(--color-border);
+  border-top: 2px solid var(--color-accent);
   border-radius: 50%;
   animation: spin 1s linear infinite;
   margin-left: 0.5rem;
@@ -112,10 +112,10 @@ body {
 
 /* Error states */
 .error {
-  color: #dc3545;
-  background-color: #f8d7da;
-  border: 1px solid #f5c6cb;
-  border-radius: 4px;
+  color: var(--color-danger);
+  background-color: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  border-radius: 8px;
   padding: 1rem;
   margin: 1rem 0;
 }
