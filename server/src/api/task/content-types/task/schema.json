@@ -14,9 +14,8 @@
     "title": {
       "type": "string",
       "required": true
-    },
-    "description": {
-      "type": "blocks"
+    },    "description": {
+      "type": "text"
     },
     "dueDate": {
       "type": "datetime"

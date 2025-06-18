@@ -1,0 +1,67 @@
+.backlog-list {
+  margin-bottom: 2rem;
+}
+
+.backlog-list h2 {
+  margin-bottom: 1.5rem;
+  color: var(--color-text-primary);
+  font-size: 1.75rem;
+  font-weight: 800;
+}
+
+.task-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+}
+
+.task-item {
+  padding: 1rem;
+  margin-bottom: 0;
+  background-color: var(--color-card-bg);
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+  transition: all 0.3s ease;
+}
+
+.task-item:hover {
+  background-color: rgba(255, 255, 255, 0.08);
+  cursor: pointer;
+}
+
+/* Task item for clickable tasks */
+.task-item--clickable {
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border-radius: 12px;
+  padding: 1.25rem;
+  border: 1px solid var(--color-border);
+  background-color: var(--color-card-bg);
+  margin-bottom: 1rem;
+}
+
+.task-item--clickable:hover {
+  border-color: var(--color-accent);
+  background-color: var(--color-card-bg);
+}
+
+.task-item__title {
+  font-weight: 700;
+  color: var(--color-text-primary);
+  margin-bottom: 0.75rem;
+  font-size: 1.1rem;
+  line-height: 1.3;
+}
+
+.task-item__description {
+  color: var(--color-text-secondary);
+  font-size: 0.95rem;
+  line-height: 1.5;
+  position: relative;
+  opacity: 0.9;
+}
+
+.backlog-list-container {
+  margin-bottom: 2rem;
+}
