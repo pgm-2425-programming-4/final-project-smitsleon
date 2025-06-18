@@ -1,9 +1,56 @@
 import { useQuery } from "@tanstack/react-query";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { fetchKanbanTasks } from "../../queries/fetch-kanban-tasks";
 import { fetchTaskStates } from "../../queries/fetch-task-states";
 import { fetchProjects } from "../../queries/fetch-projects";
+import { fetchLabels } from "../../queries/fetch-labels";
 import EditTaskForm from "../EditTaskForm";
+
+// Filter component for kanban board
+function KanbanFilters({
+  searchTerm,
+  setSearchTerm,
+  selectedLabels,
+  setSelectedLabels,
+  labels,
+}) {
+  const handleLabelToggle = (labelId) => {
+    setSelectedLabels((prev) =>
+      prev.includes(labelId)
+        ? prev.filter((id) => id !== labelId)
+        : [...prev, labelId],
+    );
+  };
+
+  return (
+    <div className="kanban-filters">
+      <div className="kanban-filters__search">
+        <input
+          type="text"
+          placeholder="Zoek taken op titel of beschrijving..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          className="kanban-search-input"
+        />
+      </div>
+      <div className="kanban-filters__labels">
+        <div className="kanban-label-filters">
+          {labels?.map((label) => (
+            <button
+              key={label.id}
+              onClick={() => handleLabelToggle(label.documentId)}
+              className={`kanban-label-filter ${
+                selectedLabels.includes(label.documentId) ? "active" : ""
+              }`}
+            >
+              {label.name}
+            </button>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
 
 function KanbanCard({ task, onTaskClick }) {
   const formatDate = (dateString) => {
@@ -93,6 +140,8 @@ function KanbanColumn({ status, tasks, onTaskClick }) {
 
 export function KanbanBoard({ selectedProject }) {
   const [editingTask, setEditingTask] = useState(null);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedLabels, setSelectedLabels] = useState([]);
 
   const {
     data: kanbanTasks,
@@ -120,6 +169,12 @@ export function KanbanBoard({ selectedProject }) {
     queryFn: fetchProjects,
   });
 
+  // Fetch labels for filtering
+  const { data: labelsList } = useQuery({
+    queryKey: ["labels"],
+    queryFn: fetchLabels,
+  });
+
   const handleTaskClick = (task) => {
     setEditingTask(task);
   };
@@ -127,6 +182,45 @@ export function KanbanBoard({ selectedProject }) {
   const handleCloseEdit = () => {
     setEditingTask(null);
   };
+
+  // Memoized filtered tasks
+  const filteredTasks = useMemo(() => {
+    if (!kanbanTasks?.data) return [];
+    return kanbanTasks.data.filter((task) => {
+      // Handle search term matching
+      const titleText = task.title?.toLowerCase() || "";
+
+      // Handle description text extraction (both text and blocks format)
+      let descriptionText = "";
+      if (task.description) {
+        if (Array.isArray(task.description)) {
+          // Handle blocks format
+          descriptionText = task.description
+            .map((block) =>
+              block?.children?.map((child) => child?.text).join(""),
+            )
+            .join(" ")
+            .toLowerCase();
+        } else {
+          // Handle text format
+          descriptionText = task.description.toLowerCase();
+        }
+      }
+
+      const matchesSearchTerm =
+        !searchTerm ||
+        titleText.includes(searchTerm.toLowerCase()) ||
+        descriptionText.includes(searchTerm.toLowerCase());
+      const matchesLabelFilter =
+        selectedLabels.length === 0 ||
+        (task.labels &&
+          task.labels.some((label) =>
+            selectedLabels.includes(label.documentId),
+          ));
+
+      return matchesSearchTerm && matchesLabelFilter;
+    });
+  }, [kanbanTasks?.data, searchTerm, selectedLabels]);
 
   if (!selectedProject) {
     return (
@@ -164,8 +258,8 @@ export function KanbanBoard({ selectedProject }) {
       }
     });
   } // Group tasks by their status with comprehensive error handling
-  if (kanbanTasks && kanbanTasks.data && Array.isArray(kanbanTasks.data)) {
-    kanbanTasks.data.forEach((task) => {
+  if (filteredTasks && Array.isArray(filteredTasks)) {
+    filteredTasks.forEach((task) => {
       // Add comprehensive safety checks for the task structure
       if (!task) {
         return;
@@ -186,6 +280,13 @@ export function KanbanBoard({ selectedProject }) {
   }
   return (
     <>
+      <KanbanFilters
+        searchTerm={searchTerm}
+        setSearchTerm={setSearchTerm}
+        selectedLabels={selectedLabels}
+        setSelectedLabels={setSelectedLabels}
+        labels={labelsList?.data}
+      />
       <div className="kanban-board">
         {taskStates && Array.isArray(taskStates) ? (
           taskStates
