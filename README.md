@@ -27,25 +27,9 @@ Jammin is een moderne task management applicatie die teams helpt bij het organis
 - **Vite** - Build tool en development server
 
 ### Backend
-- **Strapi 5** - Headless CMS en API
-- **PostgreSQL** - Database
-- **Better-SQLite3** - Development database
+- **Strapi 5**
+- **PostgreSQL**
 
-## Project Structuur
-
-```
-├── client/          # React frontend applicatie
-│   ├── src/
-│   │   ├── components/  # Herbruikbare UI componenten
-│   │   ├── routes/      # Pagina componenten
-│   │   ├── queries/     # API calls en data fetching
-│   │   └── constants/   # Applicatie constanten
-│   └── public/          # Statische assets en CSS
-└── server/          # Strapi backend
-    ├── src/api/         # API endpoints en controllers
-    ├── config/          # Strapi configuratie
-    └── database/        # Database migraties
-```
 
 ## Gebruik
 
@@ -55,7 +39,7 @@ Jammin is een moderne task management applicatie die teams helpt bij het organis
 4. **Backlog View**: Bekijk alle backlog taken in een gepagineerde lijst
 5. **Filtering**: Gebruik de zoekfunctie en label filters om specifieke taken te vinden
 
-## 🚀 Development Setup
+## Development Setup
 
 ### Client (Frontend)
 ```bash
