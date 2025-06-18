@@ -1,8 +1,11 @@
 import { useQuery } from "@tanstack/react-query";
+import { useState } from "react";
 import { fetchKanbanTasks } from "../../queries/fetch-kanban-tasks";
 import { fetchTaskStates } from "../../queries/fetch-task-states";
+import { fetchProjects } from "../../queries/fetch-projects";
+import EditTaskForm from "../EditTaskForm";
 
-function KanbanCard({ task }) {
+function KanbanCard({ task, onTaskClick }) {
   const formatDate = (dateString) => {
     if (!dateString) return null;
     return new Date(dateString).toLocaleDateString("nl-NL", {
@@ -16,19 +19,26 @@ function KanbanCard({ task }) {
   if (!task) {
     return null;
   }
-
   return (
-    <div className="kanban-task">
-      <div className="kanban-task__title">{task.title || "Geen titel"}</div>
-      {task.description && Array.isArray(task.description) && (
-        <div className="kanban-task__description">
-          {/* Simple text rendering for blocks content */}
-          {task.description
-            .map((block) =>
-              block?.children?.map((child) => child?.text).join(""),
-            )
-            .join(" ")}
-        </div>
+    <div
+      className="kanban-task"
+      onClick={() => onTaskClick(task)}
+      style={{ cursor: "pointer" }}
+    >
+      <div className="kanban-task__title">{task.title || "Geen titel"}</div>{" "}
+      {task.description && (
+        <div
+          className="kanban-task__description"
+          title={
+            Array.isArray(task.description)
+              ? task.description
+                  .map((block) =>
+                    block?.children?.map((child) => child?.text).join(""),
+                  )
+                  .join(" ")
+              : task.description
+          }
+        ></div>
       )}
       <div className="kanban-task__meta">
         {task.dueDate && <span>Due: {formatDate(task.dueDate)}</span>}
@@ -55,7 +65,7 @@ function KanbanCard({ task }) {
   );
 }
 
-function KanbanColumn({ status, tasks }) {
+function KanbanColumn({ status, tasks, onTaskClick }) {
   // Safety check
   if (!status) {
     return null;
@@ -65,7 +75,6 @@ function KanbanColumn({ status, tasks }) {
     <div className="kanban-column">
       <div className="kanban-column__header">
         <h3 className="kanban-column__title">{status.name}</h3>
-        <span className="kanban-column__count">{tasks.length}</span>
       </div>
       <div className="kanban-tasks">
         {tasks.length === 0 ? (
@@ -73,7 +82,9 @@ function KanbanColumn({ status, tasks }) {
             <p>Geen taken in deze status</p>
           </div>
         ) : (
-          tasks.map((task) => <KanbanCard key={task.id} task={task} />)
+          tasks.map((task) => (
+            <KanbanCard key={task.id} task={task} onTaskClick={onTaskClick} />
+          ))
         )}
       </div>
     </div>
@@ -81,6 +92,8 @@ function KanbanColumn({ status, tasks }) {
 }
 
 export function KanbanBoard({ selectedProject }) {
+  const [editingTask, setEditingTask] = useState(null);
+
   const {
     data: kanbanTasks,
     isPending: tasksLoading,
@@ -100,6 +113,20 @@ export function KanbanBoard({ selectedProject }) {
     queryKey: ["taskStates"],
     queryFn: fetchTaskStates,
   });
+
+  // Fetch projects for the edit form
+  const { data: projectList } = useQuery({
+    queryKey: ["projects"],
+    queryFn: fetchProjects,
+  });
+
+  const handleTaskClick = (task) => {
+    setEditingTask(task);
+  };
+
+  const handleCloseEdit = () => {
+    setEditingTask(null);
+  };
 
   if (!selectedProject) {
     return (
@@ -158,22 +185,33 @@ export function KanbanBoard({ selectedProject }) {
     });
   }
   return (
-    <div className="kanban-board">
-      {taskStates && Array.isArray(taskStates) ? (
-        taskStates
-          .filter((status) => status.name !== "Backlog") // Exclude Backlog status
-          .map((status) => (
-            <KanbanColumn
-              key={status.id}
-              status={status}
-              tasks={tasksByStatus[status.id] || []}
-            />
-          ))
-      ) : (
-        <div className="kanban-placeholder">
-          <p>No task states available</p>
-        </div>
+    <>
+      <div className="kanban-board">
+        {taskStates && Array.isArray(taskStates) ? (
+          taskStates
+            .filter((status) => status.name !== "Backlog") // Exclude Backlog status
+            .map((status) => (
+              <KanbanColumn
+                key={status.id}
+                status={status}
+                tasks={tasksByStatus[status.id] || []}
+                onTaskClick={handleTaskClick}
+              />
+            ))
+        ) : (
+          <div className="kanban-placeholder">
+            <p>No task states available</p>
+          </div>
+        )}
+      </div>
+
+      {editingTask && (
+        <EditTaskForm
+          task={editingTask}
+          onClose={handleCloseEdit}
+          projects={projectList?.data || []}
+        />
       )}
-    </div>
+    </>
   );
 }

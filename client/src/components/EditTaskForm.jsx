@@ -1,20 +1,47 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { createTask } from "../queries/task-operator";
+import { updateTask, deleteTask } from "../queries/task-operator";
 import { fetchTaskStates } from "../queries/fetch-task-states";
 import { fetchLabels } from "../queries/fetch-labels";
 
-export default function AddTaskForm({ onClose, currentProjectId, projects }) {
-  const [title, setTitle] = useState("");
+export default function EditTaskForm({ task, onClose, projects }) {
+  const [title, setTitle] = useState(task?.title || "");
   const [description, setDescription] = useState("");
   const [dueDate, setDueDate] = useState("");
   const [selectedProject, setSelectedProject] = useState(
-    currentProjectId || "",
+    task?.project?.documentId || "",
   );
-  const [selectedStatus, setSelectedStatus] = useState("");
+  const [selectedStatus, setSelectedStatus] = useState(
+    task?.task_status?.documentId || "",
+  );
   const [selectedLabels, setSelectedLabels] = useState([]);
 
   const queryClient = useQueryClient();
+
+  // Initialize form with task data
+  useEffect(() => {
+    if (task) {
+      setTitle(task.title || ""); // Handle description (now text format)
+      setDescription(task.description || "");
+
+      // Handle due date
+      if (task.dueDate) {
+        const date = new Date(task.dueDate);
+        setDueDate(date.toISOString().slice(0, 16)); // Format for datetime-local input
+      }
+
+      // Handle project
+      setSelectedProject(task.project?.documentId || "");
+
+      // Handle status
+      setSelectedStatus(task.task_status?.documentId || "");
+
+      // Handle labels
+      if (task.labels && Array.isArray(task.labels)) {
+        setSelectedLabels(task.labels.map((label) => label.documentId));
+      }
+    }
+  }, [task]);
 
   // Fetch task states
   const { data: taskStates } = useQuery({
@@ -30,25 +57,37 @@ export default function AddTaskForm({ onClose, currentProjectId, projects }) {
 
   const labels = labelsData?.data || [];
 
-  // Mutation for creating tasks
-  const createTaskMutation = useMutation({
-    mutationFn: createTask,
+  // Mutation for updating tasks
+  const updateTaskMutation = useMutation({
+    mutationFn: ({ documentId, taskData }) => updateTask(documentId, taskData),
     onSuccess: () => {
       // Invalidate and refetch relevant queries
       queryClient.invalidateQueries({ queryKey: ["kanbanTasks"] });
       queryClient.invalidateQueries({ queryKey: ["backlogTasks"] });
 
-      // Reset form and close modal
-      setTitle("");
-      setDescription("");
-      setDueDate("");
-      setSelectedStatus("");
-      setSelectedLabels([]);
       onClose();
     },
     onError: (error) => {
       alert(
-        "Er is een fout opgetreden bij het aanmaken van de taak: " +
+        "Er is een fout opgetreden bij het bijwerken van de taak: " +
+          error.message,
+      );
+    },
+  });
+
+  // Mutation for deleting tasks
+  const deleteTaskMutation = useMutation({
+    mutationFn: (documentId) => deleteTask(documentId),
+    onSuccess: () => {
+      // Invalidate and refetch relevant queries
+      queryClient.invalidateQueries({ queryKey: ["kanbanTasks"] });
+      queryClient.invalidateQueries({ queryKey: ["backlogTasks"] });
+
+      onClose();
+    },
+    onError: (error) => {
+      alert(
+        "Er is een fout opgetreden bij het verwijderen van de taak: " +
           error.message,
       );
     },
@@ -67,14 +106,8 @@ export default function AddTaskForm({ onClose, currentProjectId, projects }) {
       return;
     }
 
-    // Find default status (Backlog) if no status selected
-    const defaultStatus = taskStates?.find(
-      (status) => status.name === "Backlog",
-    );
-    const statusToUse = selectedStatus || defaultStatus?.documentId;
-
-    if (!statusToUse) {
-      alert("Geen geldige status gevonden");
+    if (!selectedStatus) {
+      alert("Selecteer een status");
       return;
     }
 
@@ -84,18 +117,25 @@ export default function AddTaskForm({ onClose, currentProjectId, projects }) {
       description: description.trim() || null,
       dueDate: dueDate || null,
       project: selectedProject,
-      task_status: statusToUse,
+      task_status: selectedStatus,
       labels: selectedLabels.length > 0 ? selectedLabels : null,
     };
 
-    createTaskMutation.mutate(taskData);
+    updateTaskMutation.mutate({
+      documentId: task.documentId,
+      taskData,
+    });
   };
+
+  if (!task) {
+    return null;
+  }
 
   return (
     <div className="modal-overlay">
       <div className="modal">
         <div className="modal__header">
-          <h2 className="modal__title">Nieuwe Taak Toevoegen</h2>
+          <h2 className="modal__title">Taak Bewerken</h2>
           <button className="modal__close" onClick={onClose} type="button">
             ×
           </button>
@@ -103,12 +143,12 @@ export default function AddTaskForm({ onClose, currentProjectId, projects }) {
 
         <form onSubmit={handleSubmit}>
           <div className="form-group">
-            <label htmlFor="title" className="form-label">
+            <label htmlFor="edit-title" className="form-label">
               Titel *
             </label>
             <input
               type="text"
-              id="title"
+              id="edit-title"
               className="form-input"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
@@ -118,11 +158,11 @@ export default function AddTaskForm({ onClose, currentProjectId, projects }) {
           </div>
 
           <div className="form-group">
-            <label htmlFor="description" className="form-label">
+            <label htmlFor="edit-description" className="form-label">
               Beschrijving
             </label>
             <textarea
-              id="description"
+              id="edit-description"
               className="form-textarea"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
@@ -132,11 +172,11 @@ export default function AddTaskForm({ onClose, currentProjectId, projects }) {
           </div>
 
           <div className="form-group">
-            <label htmlFor="project" className="form-label">
+            <label htmlFor="edit-project" className="form-label">
               Project *
             </label>
             <select
-              id="project"
+              id="edit-project"
               className="form-select"
               value={selectedProject}
               onChange={(e) => setSelectedProject(e.target.value)}
@@ -152,16 +192,17 @@ export default function AddTaskForm({ onClose, currentProjectId, projects }) {
           </div>
 
           <div className="form-group">
-            <label htmlFor="status" className="form-label">
-              Status
+            <label htmlFor="edit-status" className="form-label">
+              Status *
             </label>
             <select
-              id="status"
+              id="edit-status"
               className="form-select"
               value={selectedStatus}
               onChange={(e) => setSelectedStatus(e.target.value)}
+              required
             >
-              <option value="">Standaard (Backlog)</option>
+              <option value="">Selecteer een status</option>
               {taskStates?.map((status) => (
                 <option key={status.id} value={status.documentId}>
                   {status.name}
@@ -201,12 +242,12 @@ export default function AddTaskForm({ onClose, currentProjectId, projects }) {
           </div>
 
           <div className="form-group">
-            <label htmlFor="dueDate" className="form-label">
+            <label htmlFor="edit-dueDate" className="form-label">
               Vervaldatum
             </label>
             <input
               type="datetime-local"
-              id="dueDate"
+              id="edit-dueDate"
               className="form-input"
               value={dueDate}
               onChange={(e) => setDueDate(e.target.value)}
@@ -224,12 +265,32 @@ export default function AddTaskForm({ onClose, currentProjectId, projects }) {
             <button
               type="submit"
               className="button button--primary"
-              disabled={createTaskMutation.isPending}
+              disabled={updateTaskMutation.isPending}
             >
-              {createTaskMutation.isPending ? "Bezig..." : "Taak Toevoegen"}
+              {updateTaskMutation.isPending ? "Bezig..." : "Taak Bijwerken"}
             </button>
           </div>
         </form>
+
+        <div className="modal__footer">
+          <button
+            className="button button--danger"
+            onClick={() => {
+              if (
+                window.confirm(
+                  "Weet je zeker dat je deze taak wilt verwijderen?",
+                )
+              ) {
+                deleteTaskMutation.mutate(task.documentId);
+              }
+            }}
+            disabled={deleteTaskMutation.isPending}
+          >
+            {deleteTaskMutation.isPending
+              ? "Verwijderen..."
+              : "Taak Verwijderen"}
+          </button>
+        </div>
       </div>
     </div>
   );

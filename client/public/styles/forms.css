@@ -95,9 +95,50 @@
 
 .form-actions {
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
   gap: 1rem;
   margin-top: 2rem;
   padding-top: 1rem;
   border-top: 1px solid #e9ecef;
+}
+
+.modal__footer {
+  margin-top: 1.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid #e9ecef;
+  display: flex;
+  justify-content: center;
+}
+
+/* Labels grid styling */
+.labels-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.label-checkbox {
+  display: flex;
+  align-items: center;
+  padding: 0.5rem;
+  background-color: #f8f9fa;
+  border: 1px solid #dee2e6;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.label-checkbox:hover {
+  background-color: #e9ecef;
+}
+
+.label-checkbox input[type="checkbox"] {
+  margin-right: 0.5rem;
+  margin-bottom: 0;
+}
+
+.label-text {
+  font-size: 0.9rem;
+  color: #495057;
 }

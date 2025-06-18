@@ -7,7 +7,6 @@ import AddTaskForm from "../../components/AddTaskForm";
 function ProjectLayout() {
   const { projectId } = Route.useParams();
   const [showModal, setShowModal] = useState(false);
-  const idAsNumber = Number(projectId);
 
   const { data: projectList } = useQuery({
     queryKey: ["projects"],
@@ -66,11 +65,11 @@ function ProjectLayout() {
           </button>
         </div>
       </header>
-      <Outlet />
+      <Outlet />{" "}
       {showModal && (
         <AddTaskForm
           onClose={() => setShowModal(false)}
-          currentProjectId={idAsNumber}
+          currentProjectId={project?.documentId}
           projects={projectList?.data || []}
         />
       )}
