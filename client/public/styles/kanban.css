@@ -66,41 +66,14 @@
   transition: all 0.3s ease;
 
   position: relative;
-  overflow: hidden;
-}
-
-.kanban-task::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(255, 255, 255, 0.1),
-    transparent
-  );
-  transition: left 0.5s ease;
-}
-
-.kanban-task:hover::before {
-  left: 100%;
+  
 }
 
 .kanban-task:hover {
   border-color: var(--color-accent);
-
-  background: linear-gradient(
-    145deg,
-    rgba(255, 255, 255, 0.12),
-    rgba(255, 255, 255, 0.08)
-  );
 }
 
-.kanban-task:active {
-}
+
 
 .kanban-task__title {
   font-weight: 700;
@@ -204,27 +177,7 @@
   color: var(--color-text-secondary);
 
   position: relative;
-  overflow: hidden;
-}
-
-.kanban-label-filter::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(255, 255, 255, 0.1),
-    transparent
-  );
-  transition: left 0.5s ease;
-}
-
-.kanban-label-filter:hover::before {
-  left: 100%;
+  
 }
 
 .kanban-label-filter:hover {
@@ -234,11 +187,7 @@
 }
 
 .kanban-label-filter.active {
-  background: linear-gradient(
-    135deg,
-    var(--color-accent),
-    var(--color-accent-hover)
-  );
+  background-color: var(--color-accent);
   border-color: var(--color-accent-hover);
   color: var(--color-text-primary);
   font-weight: 600;

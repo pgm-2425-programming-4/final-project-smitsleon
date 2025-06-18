@@ -22,28 +22,17 @@
   font-weight: 600;
   transition: all 0.3s ease;
   position: relative;
-  overflow: hidden;
+  
   min-width: 44px;
 }
 
-.page-button::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(255, 255, 255, 0.2),
-    transparent
-  );
-  transition: left 0.5s ease;
+.page-button:hover:not(:disabled) {
+  background-color: var(--color-accent-hover);
 }
 
-.page-button:hover::before {
-  left: 100%;
+.page-button.active {
+  background-color: var(--color-card-bg);
+  font-weight: 800;
 }
 
 .page-button:disabled {
@@ -52,23 +41,6 @@
   cursor: not-allowed;
   border-color: var(--color-border);
   opacity: 0.5;
-}
-
-.page-button:hover:not(:disabled) {
-  background: linear-gradient(
-    135deg,
-    var(--color-accent-hover),
-    var(--color-accent)
-  );
-  
-  
-}
-
-.page-button.active {
-  background-color: var(--color-card-bg);
-  font-weight: 800;
-  
-  
 }
 
 .pagination-list {
@@ -96,11 +68,9 @@
   font-size: 0.9rem;
   cursor: pointer;
   transition: all 0.3s ease;
-  
 }
 
 .dropdown:focus {
   outline: none;
   border-color: #4a90e2;
-  
 }
