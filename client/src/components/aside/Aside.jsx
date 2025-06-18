@@ -19,7 +19,7 @@ export function ProjectAside() {
   if (isPending) {
     return (
       <aside className="project-aside">
-        <h3>Navigation</h3>
+        <h3>Jammin</h3>
         <div className="loading">Loading...</div>
       </aside>
     );
@@ -28,7 +28,7 @@ export function ProjectAside() {
   if (isError) {
     return (
       <aside className="project-aside">
-        <h3>Navigation</h3>
+        <h3>Jammin</h3>
         <div className="error">Error: {error.message}</div>
       </aside>
     );
@@ -38,7 +38,7 @@ export function ProjectAside() {
 
   return (
     <aside className="project-aside">
-      <h3>Navigation</h3>
+      <h3>Jammin</h3>
       <nav className="project-nav">
         <ul className="project-list">
           <li>
